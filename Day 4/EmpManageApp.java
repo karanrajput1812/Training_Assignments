@@ -143,21 +143,28 @@ public class EmpManageApp {
                 break;
 
                 case 4:
-                if (Emp.countEmp == 0){
-                    System.out.println("No Employee Present to Delete");
+            	if (Emp.countEmp == 0) {
+                	System.out.println("No Employee Present to Delete");
+            	} else {
+                	System.out.println("Enter the Employee id for deletion");
+                	int empid = sc.nextInt();
+                	if (empid >= 0 && empid < Emp.countEmp) {
+                    	System.out.print("Do we really want to delete the record (Y/N)? ");
+                    	String c = sc.next();
+                    	if (c.equalsIgnoreCase("Y")) {
+                        	emp[empid].display();
+                        	for (int i = empid; i < Emp.countEmp - 1; i++) {
+                            	emp[i] = emp[i + 1];
+                        }
+                        emp[Emp.countEmp - 1] = null;
+                        Emp.countEmp--;
+                        System.out.println("Employee record deleted successfully");
+                    	}
+                } else {
+                    System.out.println("Invalid Employee ID");
                 }
-		System.out.println("Enter the Employee id for deletion");
-		int empid = sc.nextInt();
-		System.out.print("Do we really want to delete the record (Y/N)?");
-		String c = sc.next();
-		emp[empid].display();
-		for (int i = empid; i < Emp.countEmp-1; i++){
-       	    		emp[i] = emp[i+1];
-               	}
-		emp[Emp.countEmp-1] = null;
-		Emp.countEmp--;
-		System.out.println("Employee id recorded successfully");
-	        break;
+            }
+            break;
 
             }
         }while(ch1 != 5);
