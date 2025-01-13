@@ -34,13 +34,11 @@ abstract class Emp{
     }
 
     final public void display() {
-	System.out.println("-------------------------------------");
         System.out.println("Name: "+name);
 	System.out.println("Employee Id: "+eid);
         System.out.println("Age: "+age);
         System.out.println("Salary: "+salary);
         System.out.println("Designation: "+designation);
-	System.out.println("-------------------------------------");
         System.out.println();
     }
 
