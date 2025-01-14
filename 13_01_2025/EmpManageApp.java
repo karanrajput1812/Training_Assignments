@@ -22,15 +22,14 @@ abstract class Emp {
 			name = sc.next();
 			employees[countEmp] = eid;
 			System.out.println("Enter your age");
-			int age = -1;
 			do {
 				try {
 					age = sc.nextInt();
 					if (age < 20 || age > 60) {
-						throw new UserException("Age must be between 20 and 60!");
+						throw new Invalid_Input_Exception("Age must be between 20 and 60!");
 					}
 					this.age = age;
-				} catch (UserException e) {
+				} catch (Invalid_Input_Exception e) {
 					System.out.println(e.getMessage());
 				} catch (InputMismatchException e) {
 					System.out.println("Enter The Correct Choice, Characters not accepted.");
@@ -115,12 +114,12 @@ public class EmpManageApp {
 				try {
 					ch1 = sc.nextInt();
 					if (ch1 < 1 || ch1 > 5) {
-						throw new UserException("Enter The Correct Choice Between 1 to 5.");
+						throw new Invalid_Input_Exception("Enter The Correct Choice Between 1 to 5.");
 					}
 				} catch (InputMismatchException e) {
 					System.out.println("Enter The Correct Choice, Characters not accepted.");
 					sc.nextLine();
-				} catch (UserException e) {
+				} catch (Invalid_Input_Exception e) {
 					System.out.println(e.getMessage());
 				}
 			} while (ch1 < 1 || ch1 > 5);
@@ -139,9 +138,9 @@ public class EmpManageApp {
 							try {
 								ch2 = sc.nextInt();
 								if (ch2 < 1 || ch2 > 4) {
-									throw new UserException("Enter The Correct Choice Between 1 to 4");
+									throw new Invalid_Input_Exception("Enter The Correct Choice Between 1 to 4");
 								}
-							} catch (UserException e) {
+							} catch (Invalid_Input_Exception e) {
 								System.out.println(e.getMessage());
 							} catch (InputMismatchException e) {
 								System.out.println("Enter The Correct Choice, Characters not accepted.");
@@ -184,7 +183,7 @@ public class EmpManageApp {
 					} else {
 						System.out.println("Enter the Employee id for deletion");
 						int empid = sc.nextInt();
-						if (empid >= 0 && empid < Emp.countEmp) {
+						if (empid >= 0 && empid <= Emp.countEmp) {
 							System.out.print("Do we really want to delete the record (Y/N)? ");
 							String c = sc.next();
 							if (c.equalsIgnoreCase("Y")) {
@@ -209,17 +208,12 @@ public class EmpManageApp {
 	}
 }
 
-class UserException extends Exception {
-	public UserException() {
-		super(); // added by default
+class Invalid_Input_Exception extends Exception {
+	public Invalid_Input_Exception() {
+		super();
 	}
 
-	public UserException(String msg) {
+	public Invalid_Input_Exception(String msg) {
 		super(msg);
-	}
-
-	public void display() {
-		System.out.println("My Custom Display Logic");
-
 	}
 }

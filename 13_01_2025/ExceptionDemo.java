@@ -1,7 +1,6 @@
 import java.io.*;
 import java.sql.*;
 
-
 public class ExceptionDemo 
 {
 	public static void main(String args[])
@@ -23,10 +22,8 @@ public class ExceptionDemo
 					return;					
 				if(i==60)
 					System.exit(0);
-				
 				if(i==40)
 					throw new UserException("When i is 4");
-				
 				if(i==200)
 					throw new UserException("When i is 2");
 
