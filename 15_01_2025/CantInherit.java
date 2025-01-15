@@ -9,13 +9,13 @@ sealed class Manager permits SalesManager, MarketingManager {
 final class Peun {
 }
 
-non-sealed class SalesManager extends Manager {
+non-sealed class SalesManager extends Manager {    // extends the class from Manager And allows other class to inherit this class
 }
 
-sealed class MarketingManager extends Manager permits DistributorManager {
+sealed class MarketingManager extends Manager permits DistributorManager { // extends the class from Manager And permits other class to inherit this class whichever in permission
 }
 
-final class DistributorManager extends MarketingManager {
+final class DistributorManager extends MarketingManager {	// extends the class from Manager And not allows other class to inherit this class
 }
 
 class GlobalManager extends SalesManager {
