@@ -9,24 +9,17 @@ abstract class Emp {
     private int eid;
     private String designation;
 
-    private static int[] employees = new int[1000];
     private static int countEmp = 0;
+    private static int nextEid = 1;
 
     Emp(float salary, String designation) {
-        // Scanner sc = new Scanner(System.in);
-        eid = IdInput.readId();
-        ;
-        if (isUnique(employees, countEmp, eid)) {
-            this.eid = eid;
-            name = NameInput.readName();
-            employees[countEmp] = eid;
-            age = AgeInput.readAge(20, 60);
-            this.salary = salary;
-            this.designation = designation; 
-            countEmp++;
-        } else {
-            System.out.println("Employee Id already exists!!");
-        }
+        this.eid = nextEid++;
+        this.name = NameInput.readName();
+        this.age = AgeInput.readAge(20, 60);
+        this.salary = salary;
+        this.designation = designation;
+        System.out.println("Record created successfully with Employee ID: " + eid);
+        countEmp++;
     }
 
     public final void display() {
@@ -38,16 +31,11 @@ abstract class Emp {
         System.out.println();
     }
 
-    public abstract void raiseSalary();
-
-    private static boolean isUnique(int[] employees, int count, int eid) {
-        for (int i = 0; i < count; i++) {
-            if (employees[i] == eid) {
-                return false;
-            }
-        }
-        return true;
+    public int getEid() {
+        return eid;
     }
+
+    public abstract void raiseSalary();
 
     public static int getCountEmp() {
         return countEmp;
@@ -101,12 +89,18 @@ final class CEO extends Emp {
     }
 
     public static CEO getCEO() {
-            if (ceo == null) {
-                isCEO = true;
-                ceo = new CEO();
-            }
+        if (ceo == null) {
+            isCEO = true;
+            ceo = new CEO();
+        }
         return ceo;
     }
+
+    public static void resetCEO() {
+        ceo = null;
+        isCEO = false;
+    }
+
     @Override
     public void raiseSalary() {
         salary += 150000;
@@ -133,9 +127,10 @@ class EmpFactory {
 
 public class EmpManageApp {
     public static void main(String[] args) {
-        int ch1 = 0, ch2 = 0;
         Emp[] emp = new Emp[100];
         Scanner sc = new Scanner(System.in);
+
+        int ch1 = 0, ch2 = 0;
         do {
             System.out.println("-------------------------------------");
             System.out.println("1. Create Employee");
@@ -145,44 +140,38 @@ public class EmpManageApp {
             System.out.println("5. Exit");
             System.out.println("-------------------------------------");
             ch1 = Menu.readChoice(5);
+
             switch (ch1) {
                 case 1:
                     do {
-                        if (CEO.isCEO == true) {
+                        if (CEO.isCEO) {
                             System.out.println("---------------------------------------------");
                             System.out.println("1. Create Clerk");
                             System.out.println("2. Create Programmer");
                             System.out.println("3. Create Manager");
                             System.out.println("4. Back");
-                            System.out.println("--------------------------------------------");
+                            System.out.println("---------------------------------------------");
                             ch2 = Menu.readChoice(4);
                             switch (ch2) {
-                                case 1:
-                                    emp[Emp.getCountEmp()] = EmpFactory.createEmp("Clerk");
-                                    break;
-                                case 2:
-                                    emp[Emp.getCountEmp()] = EmpFactory.createEmp("Programmer");
-                                    break;
-                                case 3:
-                                    emp[Emp.getCountEmp()] = EmpFactory.createEmp("Manager");
-                                    break;
-                                case 4:
-                                    break;
+                                case 1 -> emp[Emp.getCountEmp()] = EmpFactory.createEmp("Clerk");
+                                case 2 -> emp[Emp.getCountEmp()] = EmpFactory.createEmp("Programmer");
+                                case 3 -> emp[Emp.getCountEmp()] = EmpFactory.createEmp("Manager");
+                                case 4 -> ch2 = 4;
                             }
                         } else {
                             System.out.println("---------------------------------------------");
                             System.out.println("1. Create CEO");
                             System.out.println("2. Back");
-                            System.out.println("--------------------------------------------");
-                            ch2 = Menu.readChoice(1);
+                            System.out.println("---------------------------------------------");
+                            ch2 = Menu.readChoice(2);
                             switch (ch2) {
                                 case 1:
                                     emp[Emp.getCountEmp()] = EmpFactory.createEmp("CEO");
                                     break;
                                 case 2:
                                     ch2 = 4;
+                                    break;
                             }
-
                         }
                     } while (ch2 != 4);
                     break;
@@ -204,46 +193,63 @@ public class EmpManageApp {
                         for (int i = 0; i < Emp.getCountEmp(); i++) {
                             emp[i].raiseSalary();
                         }
+                        System.out.println("Salary raised successfully");
                     }
                     break;
 
                 case 4:
                     if (Emp.getCountEmp() == 0) {
-                        System.out.println("No Employee Present to Delete");
+                        System.out.println("No Employee Present to Remove");
                     } else {
-                        System.out.println("Enter the Employee id for deletion");
-                        int empid = sc.nextInt();
-                        if (empid >= 0 && empid < Emp.getCountEmp()) {
-                            System.out.print("Do we really want to delete the record (Y/N)? ");
-                            String c = sc.next();
-                            if (c.equalsIgnoreCase("Y")) {
-                                emp[empid].display();
-                                for (int i = empid; i < Emp.getCountEmp() - 1; i++) {
-                                    emp[i] = emp[i + 1];
+                        System.out.println("Enter the Employee ID to delete:");
+                        int empIdToRemove = sc.nextInt();
+                        boolean found = false;
+
+                        for (int i = 0; i < Emp.getCountEmp(); i++) {
+                            if (emp[i].getEid() == empIdToRemove) {
+                                System.out.print("Do you really want to delete the record (Y/N)? ");
+                                String confirm = sc.next();
+                                if (confirm.equalsIgnoreCase("Y")) {
+                                    if (emp[i] instanceof CEO) {
+                                        CEO.isCEO = false;
+                                    }
+                                    emp[i].display();
+                                    for (int j = i; j < Emp.getCountEmp() - 1; j++) {
+                                        emp[j] = emp[j + 1];
+                                    }
+                                    emp[Emp.getCountEmp() - 1] = null;
+                                    Emp.decrementCountEmp();
+                                    System.out.println("Employee record deleted successfully");
+                                    found = true;
                                 }
-                                emp[Emp.getCountEmp() - 1] = null;
-                                Emp.decrementCountEmp();
-                                System.out.println("Employee record deleted successfully");
+                                break;
                             }
-                        } else {
-                            System.out.println("Invalid Employee ID");
+                        }
+
+                        if (!found) {
+                            System.out.println("Employee ID not found.");
                         }
                     }
                     break;
+
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Try again.");
             }
         } while (ch1 != 5);
+
         sc.close();
         System.out.println("Total Employees Present in the Company: " + Emp.getCountEmp());
     }
 }
 
 class Menu {
-    private static int maxChoice;
-
-    public static int readChoice(int mc) {
-        maxChoice = mc;
+    public static int readChoice(int maxChoice) {
         while (true) {
-            System.out.println("Enter the choice:- ");
+            System.out.println("Enter your choice:");
             try {
                 int choice = new Scanner(System.in).nextInt();
                 if (choice < 1 || choice > maxChoice) {
@@ -251,7 +257,7 @@ class Menu {
                 }
                 return choice;
             } catch (InputMismatchException e) {
-                System.out.println("Please enter number only");
+                System.out.println("Please enter a number only.");
             } catch (InvalidChoiceException e) {
                 e.displayMessage(maxChoice);
             }
@@ -260,19 +266,19 @@ class Menu {
 }
 
 class AgeInput {
-    public static int readAge(int min_age, int max_age) {
+    public static int readAge(int minAge, int maxAge) {
         while (true) {
-            System.out.println("Enter your age");
+            System.out.println("Enter your age:");
             try {
                 int age = new Scanner(System.in).nextInt();
-                if (age < min_age || age > max_age) {
+                if (age < minAge || age > maxAge) {
                     throw new InvalidAgeException();
                 }
                 return age;
             } catch (InputMismatchException e) {
-                System.out.println("Please enter number only");
+                System.out.println("Please enter a number only.");
             } catch (InvalidAgeException e) {
-                e.displayMessage(min_age, max_age);
+                e.displayMessage(minAge, maxAge);
             }
         }
     }
@@ -281,14 +287,10 @@ class AgeInput {
 class NameInput {
     public static String readName() {
         while (true) {
-            System.out.println("Enter your Name");
+            System.out.println("Enter your name:");
             try {
                 String name = new Scanner(System.in).nextLine();
-                String checker = "^[A-Z][a-z]*\\s[A-Z][a-z]*$";
-                Pattern p1 = Pattern.compile(checker);
-                Matcher m1 = p1.matcher(name);
-
-                if (!m1.matches()) {
+                if (!name.matches("^[A-Z][a-z]*\\s[A-Z][a-z]*$")) {
                     throw new InvalidNameException();
                 }
                 return name;
@@ -298,58 +300,18 @@ class NameInput {
         }
     }
 }
-
-class IdInput {
-    public static int readId() {
-        while (true) {
-            System.out.println("Enter your Employee Id");
-            try {
-                int choice = new Scanner(System.in).nextInt();
-                return choice;
-            } catch (InputMismatchException e) {
-                System.out.println("Please enter number only");
-            }
-        }
-    }
-}
-
 class InvalidChoiceException extends RuntimeException {
-    InvalidChoiceException() {
-        super();
-    }
-
     public void displayMessage(int maxChoice) {
-        System.out.println("Please enter the choice between 1 to " + maxChoice);
+        System.out.println("Please enter a choice between 1 and " + maxChoice);
     }
 }
-
 class InvalidAgeException extends RuntimeException {
-    InvalidAgeException() {
-        super();
-    }
-
-    public void displayMessage(int min_age, int max_age) {
-        System.out.println("Please enter the age between " + min_age + " to " + max_age);
+    public void displayMessage(int minAge, int maxAge) {
+        System.out.println("Please enter an age between " + minAge + " and " + maxAge);
     }
 }
-
 class InvalidNameException extends RuntimeException {
-    InvalidNameException() {
-        super();
-    }
-
     public void displayMessage() {
-        System.out.println(
-                "Please enter the valid name.\n(Name starts with capital letter, contain two words only and not contain any characters....)");
-    }
-}
-
-class CEOAlreadyExists extends RuntimeException {
-    public CEOAlreadyExists() {
-        super();
-    }
-
-    public CEOAlreadyExists(String msg) {
-        super(msg);
+        System.out.println("Invalid name. Name must start with a capital letter and contain two words.");
     }
 }

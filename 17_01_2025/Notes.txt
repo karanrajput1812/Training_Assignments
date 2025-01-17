@@ -1,0 +1,25 @@
+class EmployeeList implements Iterator
+{
+    public int count = 0;
+    public Employee[] employees = new Employee[100];
+
+    public void add(Employee e)
+    {
+        employees[count++] e;
+    }
+    public boolean hasNext()
+    {
+        if(employees[count] != null)
+            return true;
+        else
+            return false;
+    }
+    public Employee next()
+    {
+        return employees[count++];
+    }
+    public Iterator iterator()
+    {
+        return this;
+    }
+}
