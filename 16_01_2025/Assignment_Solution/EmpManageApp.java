@@ -2,6 +2,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.*;
 
+import java.lang.;
+
 abstract class Emp {
     private String name;
     private int age;
