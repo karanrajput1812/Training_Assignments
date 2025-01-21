@@ -1,5 +1,4 @@
 import java.io.IOException;
-
 public class lang_Demo extends Thread {
     public static void main(String[] args) throws IOException, InterruptedException {
         // String s1 = "Hi";;
