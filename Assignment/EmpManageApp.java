@@ -181,6 +181,9 @@ final class CEO extends Emp {
             isCEO = true;
             ceo = new CEO(id, name, age, salary, designation);
         }
+        else {
+            ceo = null;
+        }
         return ceo;
     }
 
@@ -405,13 +408,23 @@ public class EmpManageApp {
                     String designation = st.nextToken().trim();
 
 
-                    Emp e = switch (designation) {
-                        case "CEO" -> CEO.getCEO(id, name, age, salary, designation);
-                        case "Clerk" -> Clerk.getClerk(id, name, age, salary, designation);
-                        case "Programmer" -> Programmer.getProgrammer(id, name, age, salary, designation);
-                        case "Manager" -> Manager.getManager(id, name, age, salary, designation);
-                        default -> throw new IllegalArgumentException("Unknown designation: " + designation);
-                    };
+                    Emp e = null;
+                    switch (designation) {
+                        case "CEO":
+                                e = CEO.getCEO(id, name, age, salary, designation);
+                            break;
+                        case "Clerk":
+                            e = Clerk.getClerk(id, name, age, salary, designation);
+                            break;
+                        case "Programmer":
+                            e = Programmer.getProgrammer(id, name, age, salary, designation);
+                            break;
+                        case "Manager":
+                            e = Manager.getManager(id, name, age, salary, designation);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unknown designation: " + designation);
+                    }
                     if (e != null) {
                         emp.put(id, e);
                     }
