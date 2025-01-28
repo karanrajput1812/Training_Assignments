@@ -1,4 +1,4 @@
-class Person {
+class Person implements java.io.Serializable{
     int age;
-    String name;
+    transient String name; // static also not serialized similar to transient
 }

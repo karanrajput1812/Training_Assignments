@@ -1,9 +1,9 @@
-package Assignment;
+package assignment;
 
 import java.util.*;
 import java.io.*;
 
-abstract class Emp {
+abstract class Emp implements Serializable {
     protected String name;
     protected int age;
     protected float salary;
@@ -180,8 +180,7 @@ final class CEO extends Emp {
         if (ceo == null) {
             isCEO = true;
             ceo = new CEO(id, name, age, salary, designation);
-        }
-        else {
+        } else {
             ceo = null;
         }
         return ceo;
@@ -221,7 +220,9 @@ public class EmpManageApp {
         // Emp[] emp = new Emp[100];
         HashMap<Integer, Emp> emp = new HashMap<Integer, Emp>();
         Scanner sc = new Scanner(System.in);
-        loadFromFile(emp);
+        emp = loadFromFile(emp);
+        Emp.countEmp = emp.size();
+        System.out.println(emp.size());
         int ch1 = 0, ch2 = 0, ch3 = 0, ch4 = 0;
         do {
             System.out.println("-------------------------------------");
@@ -234,6 +235,7 @@ public class EmpManageApp {
             System.out.println("-------------------------------------");
             ch1 = Menu.readChoice(6);
             List<Emp> list = new ArrayList<Emp>(emp.values());
+
             switch (ch1) {
                 case 1:
                     do {
@@ -392,67 +394,26 @@ public class EmpManageApp {
         System.out.println("Total Employees Present in the Company: " + Emp.getCountEmp());
     }
 
-    private static void loadFromFile(HashMap<Integer, Emp> emp) {
+    private static HashMap<Integer, Emp> loadFromFile(HashMap<Integer, Emp> emp) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("employees.csv"));
-            String line;
-            while ((line = reader.readLine()) != null) {
-
-                StringTokenizer st = new StringTokenizer(line, ",");
-
-                try {
-                    int id = Integer.parseInt(st.nextToken().trim());
-                    String name = st.nextToken().trim();
-                    int age = Integer.parseInt(st.nextToken().trim());
-                    float salary = Float.parseFloat(st.nextToken().trim());
-                    String designation = st.nextToken().trim();
-
-
-                    Emp e = null;
-                    switch (designation) {
-                        case "CEO":
-                                e = CEO.getCEO(id, name, age, salary, designation);
-                            break;
-                        case "Clerk":
-                            e = Clerk.getClerk(id, name, age, salary, designation);
-                            break;
-                        case "Programmer":
-                            e = Programmer.getProgrammer(id, name, age, salary, designation);
-                            break;
-                        case "Manager":
-                            e = Manager.getManager(id, name, age, salary, designation);
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Unknown designation: " + designation);
-                    }
-                    if (e != null) {
-                        emp.put(id, e);
-                    }
-                } catch (NumberFormatException e) {
-                    System.err.println("Skipping line: " + line);
-                }
-            }
-            reader.close();
-            System.out.println("Data loaded from file successfully.");
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Emp.ser"));
+            HashMap<Integer, Emp> empMap = (HashMap<Integer, Emp>) ois.readObject();
+            return empMap;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e);
         }
+        return emp;
     }
 
     private static void saveToFile(HashMap<Integer, Emp> emp) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("employees.csv"));
-            Iterator<Map.Entry<Integer, Emp>> iterator = emp.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<Integer, Emp> entry = iterator.next();
-                Emp e = entry.getValue();
-                writer.write(entry.getKey() + "," + e.toCSV());
-                writer.newLine();
-            }
-            writer.close();
-            System.out.println("Data saved to file successfully.");
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Emp.ser"));
+            oos.writeObject(emp);
+            oos.close();
+            System.out.println("Successfully serializable........");
+            oos.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e);
         }
     }
 }
