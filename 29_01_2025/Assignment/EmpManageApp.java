@@ -1,7 +1,6 @@
-package assignment;
-
 import java.util.*;
 import java.io.*;
+import java.sql.*;
 
 abstract class Emp implements Serializable {
     protected String name;
@@ -9,6 +8,7 @@ abstract class Emp implements Serializable {
     protected float salary;
     protected int eid;
     protected String designation;
+    protected String department;
 
     protected static int countEmp = 0;
     protected static int nextEid = 1;
@@ -168,7 +168,7 @@ final class CEO extends Emp {
         super(id, name, age, salary, designation);
     }
 
-    public static CEO getCEO() {
+    public static Emp getCEO() {
         if (ceo == null) {
             isCEO = true;
             ceo = new CEO();
@@ -197,20 +197,171 @@ final class CEO extends Emp {
     }
 }
 
-// Abstract Factory
-class EmpFactory {
-    public static Emp createEmp(String type) {
-        switch (type) {
-            case "CEO":
-                return CEO.getCEO();
-            case "Clerk":
-                return Clerk.getClerk();
-            case "Programmer":
-                return Programmer.getProgrammer();
-            case "Manager":
-                return Manager.getManager();
-            default:
-                throw new IllegalArgumentException("Unknown employee type");
+class MainMenu {
+    public static void storeEmployee(String inputDesignation) {
+        try {
+            String name = NameInput.readName();
+            int age = AgeInput.readAge(20, 60);
+            int salary = SalaryInput.readSalary();
+            String designation = inputDesignation;
+            String department = DepartmentInput.readDepartment();
+
+            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
+                    "tiger");
+            PreparedStatement pstmt = con.prepareStatement(
+                    "insert into employee (name, age, salary, designation, department) values(?,?,?,?,?)");
+
+            pstmt.setString(1, name);
+            pstmt.setInt(2, age);
+            pstmt.setInt(3, salary);
+            pstmt.setString(4, designation);
+            pstmt.setString(5, department);
+            pstmt.execute();
+            pstmt.close();
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void displayEmployee(String type) {
+        ResultSet rs = null;
+        try {
+            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
+                    "tiger");
+            Statement stmt = con.createStatement();
+            switch (type) {
+                case "Designation" -> rs = stmt.executeQuery("select * from employee order by Designation");
+                case "ID" -> rs = stmt.executeQuery("select * from employee order by EID");
+                case "Name" -> rs = stmt.executeQuery("select * from employee order by Name");
+                case "Age" -> rs = stmt.executeQuery("select * from employee order by Age");
+                case "Salary" -> rs = stmt.executeQuery("select * from employee order by Salary");
+                case "Department" -> rs = stmt.executeQuery("select * from employee order by Department");
+                default ->
+                    throw new IllegalArgumentException("Unknown employee type");
+            }
+            while (rs.next()) {
+                System.out.println("------------------------------------------------");
+                System.out.println("ID: " + rs.getInt(1));
+                System.out.println("Name: " + rs.getString(2));
+                System.out.println("Age: " + rs.getInt(3));
+                System.out.println("Salary: " + rs.getInt(4));
+                System.out.println("Designation: " + rs.getString(5));
+                System.out.println("Department: " + rs.getString(6));
+                System.out.println("------------------------------------------------");
+            }
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void raiseEmployeeSalary(int eid) {
+        ResultSet rs = null;
+        try {
+            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
+                    "tiger");
+            Statement stmt = con.createStatement();
+            rs = stmt.executeQuery("select * from employee where eid = " + eid);
+            if (!rs.next()) {
+                System.out.println("No Employee Present with this eid");
+            } else {
+                do {
+                    System.out.println("------------------------------------------------");
+                    System.out.println("ID: " + rs.getInt(1));
+                    System.out.println("Name: " + rs.getString(2));
+                    System.out.println("Age: " + rs.getInt(3));
+                    System.out.println("Salary: " + rs.getInt(4));
+                    System.out.println("Designation: " + rs.getString(5));
+                    System.out.println("Department: " + rs.getString(6));
+                    System.out.println("------------------------------------------------");
+                } while (rs.next());
+                System.out.print("Do you really want to raise salary of the above record (Y/N)? ");
+                String confirm = new Scanner(System.in).next();
+                System.out.println("Enter the amount");
+                int amount = new Scanner(System.in).nextInt();
+                if (confirm.equalsIgnoreCase("Y")) {
+                    stmt.executeUpdate("update employee set salary = salary + " + amount + " where EID = " + eid + ";");
+                }
+            }
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void searchEmployeeBasedOnId(int searchEid) {
+        ResultSet rs = null;
+        try {
+            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
+                    "tiger");
+            PreparedStatement pstmt = con.prepareStatement("select * from employee where eid = ?");
+            pstmt.setInt(1, searchEid);
+            rs = pstmt.executeQuery();
+
+            if (!rs.next()) {
+                System.out.println("No Employee Present with this eid");
+            } else {
+                do {
+                    System.out.println("------------------------------------------------");
+                    System.out.println("ID: " + rs.getInt(1));
+                    System.out.println("Name: " + rs.getString(2));
+                    System.out.println("Age: " + rs.getInt(3));
+                    System.out.println("Salary: " + rs.getInt(4));
+                    System.out.println("Designation: " + rs.getString(5));
+                    System.out.println("Department: " + rs.getString(6));
+                    System.out.println("------------------------------------------------");
+                } while (rs.next());
+            }
+            rs.close();
+            pstmt.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+
+    public static void searchEmployee(String type, String value) {
+        ResultSet rs = null;
+        try {
+            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
+                    "tiger");
+            String query = "select * from employee where " + type + " = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, value);
+            rs = pstmt.executeQuery();
+            if (!rs.next()) {
+                System.out.println("No Employee Present with this eid");
+            } else {
+                while (rs.next()) {
+                    System.out.println("------------------------------------------------");
+                    System.out.println("ID: " + rs.getInt(1));
+                    System.out.println("Name: " + rs.getString(2));
+                    System.out.println("Age: " + rs.getInt(3));
+                    System.out.println("Salary: " + rs.getInt(4));
+                    System.out.println("Designation: " + rs.getString(5));
+                    System.out.println("Department: " + rs.getString(6));
+                    System.out.println("------------------------------------------------");
+                }
+            }
+            rs.close();
+            pstmt.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }
@@ -228,7 +379,7 @@ public class EmpManageApp {
             System.out.println("-------------------------------------");
             System.out.println("1. Create Employee");
             System.out.println("2. Display");
-            System.out.println("3. Raise Salary");
+            System.out.println("3. Appraisal");
             System.out.println("4. Remove");
             System.out.println("5. Search");
             System.out.println("6. Exit");
@@ -239,19 +390,32 @@ public class EmpManageApp {
             switch (ch1) {
                 case 1:
                     do {
-                        if (CEO.isCEO) {
+                        if (!CEO.isCEO) {
                             System.out.println("---------------------------------------------");
                             System.out.println("1. Create Clerk");
                             System.out.println("2. Create Programmer");
                             System.out.println("3. Create Manager");
-                            System.out.println("4. Back");
+                            System.out.println("4. Others");
+                            System.out.println("5. Back");
                             System.out.println("---------------------------------------------");
-                            ch2 = Menu.readChoice(4);
+                            ch2 = Menu.readChoice(5);
                             switch (ch2) {
-                                case 1 -> emp.put(IdInput.readId(emp), EmpFactory.createEmp("Clerk"));
-                                case 2 -> emp.put(IdInput.readId(emp), EmpFactory.createEmp("Programmer"));
-                                case 3 -> emp.put(IdInput.readId(emp), EmpFactory.createEmp("Manager"));
-                                case 4 -> ch2 = 4;
+                                case 1:
+                                    MainMenu.storeEmployee("Clerk");
+                                    break;
+                                case 2:
+                                    MainMenu.storeEmployee("Programmer");
+                                    break;
+                                case 3:
+                                    MainMenu.storeEmployee("Manager");
+                                    break;
+                                case 4:
+                                    String designation = DesignationInput.readDesignation();
+                                    MainMenu.storeEmployee(designation);
+                                    break;
+                                case 5:
+                                    ch2 = 5;
+                                    break;
                             }
                         } else {
                             System.out.println("---------------------------------------------");
@@ -260,71 +424,52 @@ public class EmpManageApp {
                             System.out.println("---------------------------------------------");
                             ch2 = Menu.readChoice(2);
                             switch (ch2) {
-                                case 1:
-                                    emp.put(IdInput.readId(emp), EmpFactory.createEmp("CEO"));
-                                    break;
-                                case 2:
-                                    ch2 = 4;
-                                    break;
+                                case 1 -> MainMenu.storeEmployee("CEO");
+                                case 2 -> ch2 = 5;
                             }
                         }
-                    } while (ch2 != 4);
+                    } while (ch2 != 5);
                     saveToFile(emp);
                     break;
 
                 case 2:
-                    if (Emp.getCountEmp() == 0) {
-                        System.out.println("No Employee Present to Display");
-                    } else {
-                        do {
-                            System.out.println("---------------------------------------------");
 
-                            System.out.println("Sorted Based On the");
-                            System.out.println("1. Designation");
-                            System.out.println("2. ID");
-                            System.out.println("3. Name");
-                            System.out.println("4. Age");
-                            System.out.println("5. Salary");
-                            System.out.println("6. Exit");
-                            System.out.println("---------------------------------------------");
-                            ch3 = Menu.readChoice(6);
-                            switch (ch3) {
-                                case 1 -> list.sort(new DisplayByDesignation());
-                                case 2 -> list.sort(new DisplayByEmployeeId());
-                                case 3 -> list.sort(new DisplayByName());
-                                case 4 -> list.sort(new DisplayByAge());
-                                case 5 -> list.sort(new DisplayBySalary());
-                                case 6 -> ch3 = 6;
+                    do {
+                        System.out.println("---------------------------------------------");
+                        System.out.println("Sorted Based On the");
+                        System.out.println("1. Designation");
+                        System.out.println("2. ID");
+                        System.out.println("3. Name");
+                        System.out.println("4. Age");
+                        System.out.println("5. Salary");
+                        System.out.println("6. Department");
+                        System.out.println("7. Exit");
+                        System.out.println("---------------------------------------------");
+                        ch3 = Menu.readChoice(7);
+                        switch (ch3) {
+                            case 1 -> MainMenu.displayEmployee("Designation");
+                            case 2 -> MainMenu.displayEmployee("ID");
+                            case 3 -> MainMenu.displayEmployee("Name");
+                            case 4 -> MainMenu.displayEmployee("Age");
+                            case 5 -> MainMenu.displayEmployee("Salary");
+                            case 6 -> MainMenu.displayEmployee("Department");
+                            case 7 -> ch3 = 7;
+                        }
+                        if (ch3 != 6) {
+                            for (int i = 0; i < list.size(); i++) {
+                                list.get(i).display();
                             }
-                            if (ch3 != 6) {
-                                for (int i = 0; i < list.size(); i++) {
-                                    list.get(i).display();
-                                }
-                            }
-                        } while (ch3 != 6);
-                    }
+                        }
+                    } while (ch3 != 7);
+
                     break;
 
                 case 3:
-                    if (Emp.getCountEmp() == 0) {
-                        System.out.println("No Employee Present to Raise Salary");
-                    } else {
-                        Set s = emp.entrySet();
-                        Iterator i1 = s.iterator();
-                        while (i1.hasNext()) {
-                            Map.Entry me = (Map.Entry) i1.next();
-                            System.out.println("ID: " + me.getKey());
-                            ((Emp) me.getValue()).raiseSalary();
-                        }
-                        System.out.println("Salary raised successfully");
-                        saveToFile(emp);
-                    }
+                    int eid = IdInput.readId();
+                    MainMenu.raiseEmployeeSalary(eid);
                     break;
 
                 case 4:
-                    if (Emp.getCountEmp() == 0) {
-                        System.out.println("No Employee Present to Remove");
-                    } else {
                         System.out.println("Enter the Employee ID to delete:");
                         int empIdToRemove = sc.nextInt();
                         boolean found = false;
@@ -348,7 +493,6 @@ public class EmpManageApp {
                                 found = true;
                             }
                             saveToFile(emp);
-                        }
 
                         if (!found) {
                             System.out.println("Employee ID not found.");
@@ -357,28 +501,38 @@ public class EmpManageApp {
                     break;
 
                 case 5:
-                    if (Emp.getCountEmp() == 0) {
-                        System.out.println("No Employee Present to Search");
-                    } else {
-
-                        do {
-                            System.out.println("---------------------------------------------");
-
-                            System.out.println("Search Based On the");
-                            System.out.println("1. Designation");
-                            System.out.println("2. ID");
-                            System.out.println("3. Name");
-                            System.out.println("4. Exit");
-                            System.out.println("---------------------------------------------");
-                            ch4 = Menu.readChoice(4);
-                            switch (ch4) {
-                                case 1 -> SearchEmployee.ByDesignation(emp);
-                                case 2 -> SearchEmployee.ById(emp);
-                                case 3 -> SearchEmployee.ByName(emp);
-                                case 4 -> ch4 = 4;
-                            }
-                        } while (ch4 != 4);
-                    }
+                    do {
+                        System.out.println("---------------------------------------------");
+                        System.out.println("Search Based On the");
+                        System.out.println("1. Designation");
+                        System.out.println("2. ID");
+                        System.out.println("3. Name");
+                        System.out.println("4. Department");
+                        System.out.println("5. Exit");
+                        System.out.println("---------------------------------------------");
+                        ch4 = Menu.readChoice(4);
+                        switch (ch4) {
+                            case 1:
+                                String designation = DesignationInput.readDesignation();
+                                MainMenu.searchEmployee("Designation", designation);
+                                break;
+                            case 2:
+                                int searchEid = IdInput.readId();
+                                MainMenu.searchEmployeeBasedOnId(searchEid);
+                                break;
+                            case 3:
+                                String Name = NameInput.readName();
+                                MainMenu.searchEmployee("Name", Name);
+                                break;
+                            case 4:
+                                String Department = DepartmentInput.readDepartment();
+                                MainMenu.searchEmployee("Department", Department);
+                                break;
+                            case 5:
+                                ch4 = 5;
+                                break;
+                        }
+                    } while (ch4 != 5);
                     break;
 
                 case 6:
@@ -389,9 +543,7 @@ public class EmpManageApp {
                     System.out.println("Invalid choice. Try again.");
             }
         } while (ch1 != 6);
-
         sc.close();
-        System.out.println("Total Employees Present in the Company: " + Emp.getCountEmp());
     }
 
     private static HashMap<Integer, Emp> loadFromFile(HashMap<Integer, Emp> emp) {
@@ -457,14 +609,11 @@ class AgeInput {
 }
 
 class IdInput {
-    public static int readId(HashMap<Integer, Emp> emp) {
+    public static int readId() {
         while (true) {
             System.out.println("Enter your id:");
             try {
                 int id = new Scanner(System.in).nextInt();
-                if (emp.containsKey(id)) {
-                    throw new InvalidIDException("Id already exists..");
-                }
                 return id;
             } catch (InputMismatchException e) {
                 System.out.println("Please enter a number only.");
@@ -485,6 +634,48 @@ class NameInput {
                     throw new InvalidNameException();
                 }
                 return name;
+            } catch (InvalidNameException e) {
+                e.displayMessage();
+            }
+        }
+    }
+}
+
+class DesignationInput {
+    public static String readDesignation() {
+        while (true) {
+            System.out.println("Enter your Designation:");
+            try {
+                String designation = new Scanner(System.in).nextLine();
+                return designation;
+            } catch (InvalidNameException e) {
+                e.displayMessage();
+            }
+        }
+    }
+}
+
+class SalaryInput {
+    public static int readSalary() {
+        while (true) {
+            System.out.println("Enter your salary:");
+            try {
+                int salary = new Scanner(System.in).nextInt();
+                return salary;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a number only.");
+            }
+        }
+    }
+}
+
+class DepartmentInput {
+    public static String readDepartment() {
+        while (true) {
+            System.out.println("Enter your Department:");
+            try {
+                String department = new Scanner(System.in).nextLine();
+                return department;
             } catch (InvalidNameException e) {
                 e.displayMessage();
             }
