@@ -2,24 +2,6 @@ import java.util.*;
 import java.io.*;
 import java.sql.*;
 
-class Display {
-    public static void displayEmployeeFunction(ResultSet rs) {
-        try {
-            do {
-                System.out.println("------------------------------------------------");
-                System.out.println("ID: " + rs.getInt(1));
-                System.out.println("Name: " + rs.getString(2));
-                System.out.println("Age: " + rs.getInt(3));
-                System.out.println("Salary: " + rs.getInt(4));
-                System.out.println("Designation: " + rs.getString(5));
-                System.out.println("Department: " + rs.getString(6));
-                System.out.println("------------------------------------------------");
-            } while (rs.next());
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-}
 
 class MainMenu {
     public static void storeEmployee(String inputDesignation) {
@@ -41,6 +23,7 @@ class MainMenu {
             pstmt.setString(4, designation);
             pstmt.setString(5, department);
             pstmt.execute();
+            System.out.println("Employee created successfully");
             pstmt.close();
             con.close();
         } catch (Exception e) {
@@ -103,6 +86,7 @@ class MainMenu {
                 if (confirm.equalsIgnoreCase("Y")) {
                     stmt.executeUpdate("update employee set salary = salary + " + amount + " where EID = " + eid + ";");
                 }
+                System.out.println("Employee with eid: " + eid + " salary raised successfully");
             }
             br.close();
             rs.close();
@@ -121,6 +105,7 @@ class MainMenu {
                     "tiger");
             Statement stmt = con.createStatement();
             stmt.executeUpdate("delete from employee where eid = " + eid);
+            System.out.println("Employee Deleted Successfully");
             stmt.close();
             con.close();
         } catch (SQLException e) {
@@ -164,7 +149,7 @@ class MainMenu {
             pstmt.setString(1, value);
             rs = pstmt.executeQuery();
             if (!rs.next()) {
-                System.out.println("No Employee Present with this eid");
+                System.out.println("No Employee Present with this "+ type);
             } else {
                 Display.displayEmployeeFunction(rs);
             }
@@ -175,6 +160,25 @@ class MainMenu {
             System.out.println("SQL Error: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+
+class Display {
+    public static void displayEmployeeFunction(ResultSet rs) {
+        try {
+            do {
+                System.out.println("------------------------------------------------");
+                System.out.println("ID: " + rs.getInt(1));
+                System.out.println("Name: " + rs.getString(2));
+                System.out.println("Age: " + rs.getInt(3));
+                System.out.println("Salary: " + rs.getInt(4));
+                System.out.println("Designation: " + rs.getString(5));
+                System.out.println("Department: " + rs.getString(6));
+                System.out.println("------------------------------------------------");
+            } while (rs.next());
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 }
@@ -193,7 +197,6 @@ public class EmpManageApp {
             System.out.println("6. Exit");
             System.out.println("-------------------------------------");
             ch1 = Menu.readChoice(6);
-
             switch (ch1) {
                 case 1:
                     do {
@@ -273,7 +276,7 @@ public class EmpManageApp {
                         System.out.println("4. Department");
                         System.out.println("5. Exit");
                         System.out.println("---------------------------------------------");
-                        ch4 = Menu.readChoice(4);
+                        ch4 = Menu.readChoice(5);
                         switch (ch4) {
                             case 1:
                                 String designation = DesignationInput.readDesignation();
