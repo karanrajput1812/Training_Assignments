@@ -38,9 +38,9 @@ public class ResultSetDemo {
             }
             System.out.println("--------------------------------------------");
             
-            // rs.afterLast(); Move the cursor to the last row
-            // rs.isLast(); Check if the cursor is at the last row
-            // rs.isBeforeLast(); Check if the cursor is before the last row
+            // rs.afterLast(); // --> Move the cursor to the last row
+            // rs.isLast(); // --> Check if the cursor is at the last row
+            // rs.isBeforeLast(); // --> Check if the cursor is before the last row
             
             rs.last(); // Move the cursor to the last row
             {
@@ -50,9 +50,9 @@ public class ResultSetDemo {
             }
             System.out.println("--------------------------------------------");
            
-            // rs.beforeFirst(); Move the cursor to the first row
-            // rs.isFirst(); Check if the cursor is at the first row
-            // rs.isAfterLast(); Check if the cursor is after the last row
+            // rs.beforeFirst(); // --> Move the cursor to the first row
+            // rs.isFirst(); // --> Check if the cursor is at the first row
+            // rs.isAfterLast(); // --> Check if the cursor is after the last row
 
             rs.first();  // Move the cursor to the first row
             {
