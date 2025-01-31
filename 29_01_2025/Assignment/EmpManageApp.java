@@ -1,9 +1,98 @@
 import java.util.*;
 import java.io.*;
 import java.sql.*;
+import javax.sql.*;
+import javax.sql.rowset.*;
 
+abstract class Emp {
+    protected String name;
+    protected int age;
+    protected float salary;
+    protected int eid;
+    protected String designation;
+    protected String department;
+
+    Emp(float salary, String designation) {
+        // this.eid = nextEid++;
+        this.name = NameInput.readName();
+        this.age = AgeInput.readAge(20, 60);
+        this.salary = salary;
+        this.designation = designation;
+        this.department = DepartmentInput.readDepartment();
+    }
+
+    Emp(String name, int age, float salary, String designation) {
+        this.name = NameInput.readName();
+        this.age = AgeInput.readAge(20, 60);
+        this.salary = SalaryInput.readSalary();
+        this.designation = designation;
+        this.department = DepartmentInput.readDepartment();
+    }
+}
+
+final class Clerk extends Emp {
+    Clerk() {
+        super(20000, "Clerk");
+    }
+
+    private static Clerk clerk = null;
+
+    public static Clerk getClerk() {
+        clerk = new Clerk();
+        return clerk;
+    }
+}
+
+final class Programmer extends Emp {
+    Programmer() {
+        super(30000, "Programmer");
+    }
+    private static Programmer programmer = null;
+
+    public static Programmer getProgrammer() {
+        programmer = new Programmer();
+        return programmer;
+    }
+
+   
+}
+
+final class Manager extends Emp {
+    Manager() {
+        super(100000, "Manager");
+    }
+
+    private static Manager manager = null;
+
+    public static Manager getManager() {
+        manager = new Manager();
+        return manager;
+    }
+}
+
+
+interface EmpDAO {
+    public void storeEmployee(Emp e);
+    public void displayEmployee(String type);
+    public void raiseSalary();
+    public void removeEmployee();
+    public void searchEmployee();
+}
 
 class MainMenu {
+    private static JdbcRowSet rs;
+
+    static {
+        try {
+            rs = RowSetProvider.newFactory().createJdbcRowSet();
+            rs.setUrl("jdbc:postgresql://localhost:5432/postgres");
+            rs.setUsername("postgres");
+            rs.setPassword("tiger");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public static void storeEmployee(String inputDesignation) {
         try {
             String name = NameInput.readName();
@@ -32,21 +121,18 @@ class MainMenu {
     }
 
     public static void displayEmployee(String type) {
-        ResultSet rs = null;
         try {
-            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
-                    "tiger");
-            Statement stmt = con.createStatement();
             switch (type) {
-                case "Designation" -> rs = stmt.executeQuery("select * from employee order by Designation");
-                case "ID" -> rs = stmt.executeQuery("select * from employee order by EID");
-                case "Name" -> rs = stmt.executeQuery("select * from employee order by Name");
-                case "Age" -> rs = stmt.executeQuery("select * from employee order by Age");
-                case "Salary" -> rs = stmt.executeQuery("select * from employee order by Salary");
-                case "Department" -> rs = stmt.executeQuery("select * from employee order by Department");
+                case "Designation" -> rs.setCommand("select * from employee order by Designation");
+                case "ID" -> rs.setCommand("select * from employee order by EID");
+                case "Name" -> rs.setCommand("select * from employee order by Name");
+                case "Age" -> rs.setCommand("select * from employee order by Age");
+                case "Salary" -> rs.setCommand("select * from employee order by Salary");
+                case "Department" -> rs.setCommand("select * from employee order by Department");
                 default ->
                     throw new IllegalArgumentException("Unknown employee type");
             }
+            rs.execute();
             while (rs.next()) {
                 System.out.println("------------------------------------------------");
                 System.out.println("ID: " + rs.getInt(1));
@@ -57,9 +143,6 @@ class MainMenu {
                 System.out.println("Department: " + rs.getString(6));
                 System.out.println("------------------------------------------------");
             }
-            rs.close();
-            stmt.close();
-            con.close();
         } catch (SQLException e) {
             System.out.println(e);
         } catch (Exception e) {
@@ -68,13 +151,13 @@ class MainMenu {
     }
 
     public static void raiseEmployeeSalary(int eid) {
-        ResultSet rs = null;
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
                     "tiger");
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("select * from employee where eid = " + eid);
+            rs.setCommand("select * from employee where eid = " + eid);
+            rs.execute();
             if (!rs.next()) {
                 System.out.println("No Employee Present with this eid");
             } else {
@@ -84,12 +167,11 @@ class MainMenu {
                 System.out.println("Enter the amount");
                 int amount = Integer.parseInt(br.readLine());
                 if (confirm.equalsIgnoreCase("Y")) {
-                    stmt.executeUpdate("update employee set salary = salary + " + amount + " where EID = " + eid + ";");
+                    stmt.execute("update employee set salary = salary + " + amount + " where EID = " + eid + ";");
+                    System.out.println("Employee with eid: " + eid + " salary raised successfully");
                 }
-                System.out.println("Employee with eid: " + eid + " salary raised successfully");
             }
             br.close();
-            rs.close();
             stmt.close();
             con.close();
         } catch (SQLException e) {
@@ -101,13 +183,15 @@ class MainMenu {
 
     public static void deleteEmployee(int eid) {
         try {
-            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
-                    "tiger");
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("delete from employee where eid = " + eid);
-            System.out.println("Employee Deleted Successfully");
-            stmt.close();
-            con.close();
+            rs.setCommand("select * from employee where eid = ?");
+            rs.setInt(1, eid);
+            rs.execute();
+            if (!rs.next()) {
+                System.out.println("No Employee Present with this eid");
+            } else {
+                rs.deleteRow();
+                System.out.println("Employee Deleted Successfully");
+            }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
         } catch (Exception e) {
@@ -116,22 +200,15 @@ class MainMenu {
     }
 
     public static void searchEmployeeBasedOnId(int searchEid) {
-        ResultSet rs = null;
         try {
-            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
-                    "tiger");
-            PreparedStatement pstmt = con.prepareStatement("select * from employee where eid = ?");
-            pstmt.setInt(1, searchEid);
-            rs = pstmt.executeQuery();
-
+            rs.setCommand("select * from employee where eid = ?");
+            rs.setInt(1, searchEid);
+            rs.execute();
             if (!rs.next()) {
                 System.out.println("No Employee Present with this eid");
             } else {
                 Display.displayEmployeeFunction(rs);
             }
-            rs.close();
-            pstmt.close();
-            con.close();
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
         } catch (Exception e) {
@@ -140,22 +217,16 @@ class MainMenu {
     }
 
     public static void searchEmployee(String type, String value) {
-        ResultSet rs = null;
         try {
-            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
-                    "tiger");
-            String query = "select * from employee where " + type + " = ?";
-            PreparedStatement pstmt = con.prepareStatement(query);
-            pstmt.setString(1, value);
-            rs = pstmt.executeQuery();
+
+            rs.setCommand("select * from employee where " + type + " = ?");
+            rs.setString(1, value);
+            rs.execute();
             if (!rs.next()) {
-                System.out.println("No Employee Present with this "+ type);
+                System.out.println("No Employee Present with this " + type);
             } else {
                 Display.displayEmployeeFunction(rs);
             }
-            rs.close();
-            pstmt.close();
-            con.close();
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
         } catch (Exception e) {
@@ -165,7 +236,7 @@ class MainMenu {
 }
 
 class Display {
-    public static void displayEmployeeFunction(ResultSet rs) {
+    public static void displayEmployeeFunction(JdbcRowSet rs) {
         try {
             do {
                 System.out.println("------------------------------------------------");

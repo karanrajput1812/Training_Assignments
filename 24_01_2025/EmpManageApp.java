@@ -12,12 +12,10 @@ abstract class Emp implements Serializable {
     protected static int nextEid = 1;
 
     Emp(float salary, String designation) {
-        // this.eid = nextEid++;
         this.name = NameInput.readName();
         this.age = AgeInput.readAge(20, 60);
         this.salary = salary;
         this.designation = designation;
-        System.out.println("Record created successfully");
         countEmp++;
     }
 
