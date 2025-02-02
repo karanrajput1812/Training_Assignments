@@ -318,7 +318,6 @@ class Display {
 
 public class EmpManageApp {
     public static void main(String[] args) throws SQLException {
-        Scanner sc = new Scanner(System.in);
         int ch1 = 0, ch2 = 0, ch3 = 0, ch4 = 0;
         MainMenu employeeOperations = new MainMenu();
         do {
@@ -395,7 +394,7 @@ public class EmpManageApp {
 
                 case 4:
                     System.out.println("Enter the Employee ID to delete:");
-                    int empIdToRemove = sc.nextInt();
+                    int empIdToRemove = IdInput.readId();
                     employeeOperations.deleteEmployee(empIdToRemove);
                     break;
                 case 5:
@@ -443,7 +442,6 @@ public class EmpManageApp {
         } while (ch1 != 6);
         JdbcConnection.closeJdbcConnection();
         DBConnection.closeConnection();
-        sc.close();
     }
 }
 
