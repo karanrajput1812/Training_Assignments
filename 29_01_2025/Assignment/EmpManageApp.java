@@ -13,7 +13,6 @@ abstract class Emp {
     protected String department;
 
     Emp(float salary, String designation) {
-        // this.eid = nextEid++;
         this.name = NameInput.readName();
         this.age = AgeInput.readAge(20, 60);
         this.salary = salary;
@@ -21,7 +20,7 @@ abstract class Emp {
         this.department = DepartmentInput.readDepartment();
     }
 
-    Emp(String name, int age, float salary, String designation) {
+    Emp(String designation) {
         this.name = NameInput.readName();
         this.age = AgeInput.readAge(20, 60);
         this.salary = SalaryInput.readSalary();
@@ -32,7 +31,7 @@ abstract class Emp {
 
 final class Clerk extends Emp {
     Clerk() {
-        super(20000, "Clerk");
+        super("Clerk");
     }
 
     private static Clerk clerk = null;
@@ -45,8 +44,9 @@ final class Clerk extends Emp {
 
 final class Programmer extends Emp {
     Programmer() {
-        super(30000, "Programmer");
+        super("Programmer");
     }
+
     private static Programmer programmer = null;
 
     public static Programmer getProgrammer() {
@@ -54,12 +54,11 @@ final class Programmer extends Emp {
         return programmer;
     }
 
-   
 }
 
 final class Manager extends Emp {
     Manager() {
-        super(100000, "Manager");
+        super("Manager");
     }
 
     private static Manager manager = null;
@@ -70,45 +69,105 @@ final class Manager extends Emp {
     }
 }
 
+final class OtherDesignation extends Emp {
+    OtherDesignation(String designation) {
+        super(designation);
+    }
 
-interface EmpDAO {
-    public void storeEmployee(Emp e);
-    public void displayEmployee(String type);
-    public void raiseSalary();
-    public void removeEmployee();
-    public void searchEmployee();
+    private static OtherDesignation otherDesignation = null;
+
+    public static OtherDesignation getOtherDesignation() {
+        otherDesignation = new OtherDesignation(DesignationInput.readDesignation());
+        return otherDesignation;
+    }
 }
 
-class MainMenu {
+final class DBConnection {
+    private static Connection con;
+
+    private DBConnection() {
+    }
+
+    public static Connection getConnection() throws SQLException {
+        if (con == null)
+            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "tiger");
+        return con;
+    }
+
+    public static void closeConnection() throws SQLException {
+        con.close();
+    }
+}
+
+final class JdbcConnection {
     private static JdbcRowSet rs;
 
-    static {
-        try {
+    private JdbcConnection() {
+    }
+
+    public static JdbcRowSet getJdbcConnection() throws SQLException {
+        if (rs == null) {
             rs = RowSetProvider.newFactory().createJdbcRowSet();
             rs.setUrl("jdbc:postgresql://localhost:5432/postgres");
             rs.setUsername("postgres");
             rs.setPassword("tiger");
-        } catch (Exception e) {
-            System.out.println(e);
         }
+        return rs;
     }
 
-    public static void storeEmployee(String inputDesignation) {
-        try {
-            String name = NameInput.readName();
-            int age = AgeInput.readAge(20, 60);
-            int salary = SalaryInput.readSalary();
-            String designation = inputDesignation;
-            String department = DepartmentInput.readDepartment();
+    public static void closeJdbcConnection() throws SQLException {
+        rs.close();
+    }
+}
 
-            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
-                    "tiger");
+class EmpFactory {
+    public static Emp createEmp(String type) {
+        switch (type) {
+            case "Clerk":
+                return Clerk.getClerk();
+            case "Programmer":
+                return Programmer.getProgrammer();
+            case "Manager":
+                return Manager.getManager();
+            case "Others":
+                return OtherDesignation.getOtherDesignation();
+            default:
+                throw new IllegalArgumentException("Unknown employee type");
+        }
+    }
+}
+
+interface EmpDAO {
+    abstract void storeEmployee(Emp e);
+
+    abstract void displayEmployee(String type);
+
+    abstract void raiseEmployeeSalary(int eid);
+
+    abstract void deleteEmployee(int eid);
+
+    abstract void searchEmployeeBasedOnId(int eid);
+
+    abstract void searchEmployee(String type, String value);
+}
+
+class MainMenu implements EmpDAO {
+
+    public void storeEmployee(Emp emp) {
+        try {
+            String name = emp.name;
+            int age = emp.age;
+            float salary = emp.salary;
+            String designation = emp.designation;
+            String department = emp.department;
+
+            Connection con = DBConnection.getConnection();
             PreparedStatement pstmt = con.prepareStatement(
                     "insert into employee (name, age, salary, designation, department) values(?,?,?,?,?)");
 
             pstmt.setString(1, name);
             pstmt.setInt(2, age);
-            pstmt.setInt(3, salary);
+            pstmt.setFloat(3, salary);
             pstmt.setString(4, designation);
             pstmt.setString(5, department);
             pstmt.execute();
@@ -120,8 +179,9 @@ class MainMenu {
         }
     }
 
-    public static void displayEmployee(String type) {
+    public void displayEmployee(String type) {
         try {
+            JdbcRowSet rs = JdbcConnection.getJdbcConnection();
             switch (type) {
                 case "Designation" -> rs.setCommand("select * from employee order by Designation");
                 case "ID" -> rs.setCommand("select * from employee order by EID");
@@ -150,12 +210,12 @@ class MainMenu {
         }
     }
 
-    public static void raiseEmployeeSalary(int eid) {
+    public void raiseEmployeeSalary(int eid) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres",
-                    "tiger");
+            Connection con = DBConnection.getConnection();
             Statement stmt = con.createStatement();
+            JdbcRowSet rs = JdbcConnection.getJdbcConnection();
             rs.setCommand("select * from employee where eid = " + eid);
             rs.execute();
             if (!rs.next()) {
@@ -181,8 +241,9 @@ class MainMenu {
         }
     }
 
-    public static void deleteEmployee(int eid) {
+    public void deleteEmployee(int eid) {
         try {
+            JdbcRowSet rs = JdbcConnection.getJdbcConnection();
             rs.setCommand("select * from employee where eid = ?");
             rs.setInt(1, eid);
             rs.execute();
@@ -199,8 +260,9 @@ class MainMenu {
         }
     }
 
-    public static void searchEmployeeBasedOnId(int searchEid) {
+    public void searchEmployeeBasedOnId(int searchEid) {
         try {
+            JdbcRowSet rs = JdbcConnection.getJdbcConnection();
             rs.setCommand("select * from employee where eid = ?");
             rs.setInt(1, searchEid);
             rs.execute();
@@ -216,9 +278,9 @@ class MainMenu {
         }
     }
 
-    public static void searchEmployee(String type, String value) {
+    public void searchEmployee(String type, String value) {
         try {
-
+            JdbcRowSet rs = JdbcConnection.getJdbcConnection();
             rs.setCommand("select * from employee where " + type + " = ?");
             rs.setString(1, value);
             rs.execute();
@@ -255,9 +317,10 @@ class Display {
 }
 
 public class EmpManageApp {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Scanner sc = new Scanner(System.in);
         int ch1 = 0, ch2 = 0, ch3 = 0, ch4 = 0;
+        MainMenu employeeOperations = new MainMenu();
         do {
             System.out.println("-------------------------------------");
             System.out.println("1. Create Employee");
@@ -281,17 +344,16 @@ public class EmpManageApp {
                         ch2 = Menu.readChoice(5);
                         switch (ch2) {
                             case 1:
-                                MainMenu.storeEmployee("Clerk");
+                                employeeOperations.storeEmployee(EmpFactory.createEmp("Clerk"));
                                 break;
                             case 2:
-                                MainMenu.storeEmployee("Programmer");
+                                employeeOperations.storeEmployee(EmpFactory.createEmp("Programmer"));
                                 break;
                             case 3:
-                                MainMenu.storeEmployee("Manager");
+                                employeeOperations.storeEmployee(EmpFactory.createEmp("Manager"));
                                 break;
                             case 4:
-                                String designation = DesignationInput.readDesignation();
-                                MainMenu.storeEmployee(designation);
+                                employeeOperations.storeEmployee(EmpFactory.createEmp("Others"));
                                 break;
                             case 5:
                                 ch2 = 5;
@@ -301,7 +363,6 @@ public class EmpManageApp {
                     break;
 
                 case 2:
-
                     do {
                         System.out.println("---------------------------------------------");
                         System.out.println("Sorted Based On the");
@@ -315,12 +376,12 @@ public class EmpManageApp {
                         System.out.println("---------------------------------------------");
                         ch3 = Menu.readChoice(7);
                         switch (ch3) {
-                            case 1 -> MainMenu.displayEmployee("Designation");
-                            case 2 -> MainMenu.displayEmployee("ID");
-                            case 3 -> MainMenu.displayEmployee("Name");
-                            case 4 -> MainMenu.displayEmployee("Age");
-                            case 5 -> MainMenu.displayEmployee("Salary");
-                            case 6 -> MainMenu.displayEmployee("Department");
+                            case 1 -> employeeOperations.displayEmployee("Designation");
+                            case 2 -> employeeOperations.displayEmployee("ID");
+                            case 3 -> employeeOperations.displayEmployee("Name");
+                            case 4 -> employeeOperations.displayEmployee("Age");
+                            case 5 -> employeeOperations.displayEmployee("Salary");
+                            case 6 -> employeeOperations.displayEmployee("Department");
                             case 7 -> ch3 = 7;
                         }
                     } while (ch3 != 7);
@@ -329,13 +390,13 @@ public class EmpManageApp {
 
                 case 3:
                     int eid = IdInput.readId();
-                    MainMenu.raiseEmployeeSalary(eid);
+                    employeeOperations.raiseEmployeeSalary(eid);
                     break;
 
                 case 4:
                     System.out.println("Enter the Employee ID to delete:");
                     int empIdToRemove = sc.nextInt();
-                    MainMenu.deleteEmployee(empIdToRemove);
+                    employeeOperations.deleteEmployee(empIdToRemove);
                     break;
                 case 5:
                     do {
@@ -351,19 +412,19 @@ public class EmpManageApp {
                         switch (ch4) {
                             case 1:
                                 String designation = DesignationInput.readDesignation();
-                                MainMenu.searchEmployee("Designation", designation);
+                                employeeOperations.searchEmployee("Designation", designation);
                                 break;
                             case 2:
                                 int searchEid = IdInput.readId();
-                                MainMenu.searchEmployeeBasedOnId(searchEid);
+                                employeeOperations.searchEmployeeBasedOnId(searchEid);
                                 break;
                             case 3:
                                 String Name = NameInput.readName();
-                                MainMenu.searchEmployee("Name", Name);
+                                employeeOperations.searchEmployee("Name", Name);
                                 break;
                             case 4:
                                 String Department = DepartmentInput.readDepartment();
-                                MainMenu.searchEmployee("Department", Department);
+                                employeeOperations.searchEmployee("Department", Department);
                                 break;
                             case 5:
                                 ch4 = 5;
@@ -380,6 +441,8 @@ public class EmpManageApp {
                     System.out.println("Invalid choice. Try again.");
             }
         } while (ch1 != 6);
+        JdbcConnection.closeJdbcConnection();
+        DBConnection.closeConnection();
         sc.close();
     }
 }
