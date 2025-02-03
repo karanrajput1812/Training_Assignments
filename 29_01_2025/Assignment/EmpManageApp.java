@@ -1,7 +1,6 @@
-import java.util.*;
 import java.io.*;
 import java.sql.*;
-import javax.sql.*;
+import java.util.*;
 import javax.sql.rowset.*;
 
 abstract class Emp {
@@ -82,25 +81,25 @@ final class OtherDesignation extends Emp {
     }
 }
 
-final class DBConnection {
-    private static Connection con;
+// final class DBConnection {
+//     private static Connection con = null;
 
-    private DBConnection() {
-    }
+//     private DBConnection() {
+//     }
 
-    public static Connection getConnection() throws SQLException {
-        if (con == null)
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "tiger");
-        return con;
-    }
+//     public static Connection getConnection() throws SQLException {
+//         if (con == null)
+//             con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "tiger");
+//         return con;
+//     }
 
-    public static void closeConnection() throws SQLException {
-        con.close();
-    }
-}
+//     public static void closeConnection() throws SQLException {
+//         con.close();
+//     }
+// }
 
 final class JdbcConnection {
-    private static JdbcRowSet rs;
+    private static JdbcRowSet rs = null;
 
     private JdbcConnection() {
     }
@@ -152,33 +151,26 @@ interface EmpDAO {
 }
 
 class MainMenu implements EmpDAO {
-
+    @Override
     public void storeEmployee(Emp emp) {
         try {
-            String name = emp.name;
-            int age = emp.age;
-            float salary = emp.salary;
-            String designation = emp.designation;
-            String department = emp.department;
-
-            Connection con = DBConnection.getConnection();
-            PreparedStatement pstmt = con.prepareStatement(
-                    "insert into employee (name, age, salary, designation, department) values(?,?,?,?,?)");
-
-            pstmt.setString(1, name);
-            pstmt.setInt(2, age);
-            pstmt.setFloat(3, salary);
-            pstmt.setString(4, designation);
-            pstmt.setString(5, department);
-            pstmt.execute();
-            System.out.println("Employee created successfully");
-            pstmt.close();
-            con.close();
+            JdbcRowSet rs = JdbcConnection.getJdbcConnection();
+            rs.setCommand("SELECT * FROM employee WHERE 1=0");
+            rs.execute();
+            rs.moveToInsertRow();
+            rs.updateString("name", emp.name);
+            rs.updateInt("age", emp.age);
+            rs.updateFloat("salary", emp.salary);
+            rs.updateString("designation", emp.designation);
+            rs.updateString("department", emp.department);
+            rs.insertRow();
+            rs.moveToCurrentRow();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
+    @Override
     public void displayEmployee(String type) {
         try {
             JdbcRowSet rs = JdbcConnection.getJdbcConnection();
@@ -210,30 +202,32 @@ class MainMenu implements EmpDAO {
         }
     }
 
+    @Override
     public void raiseEmployeeSalary(int eid) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            Connection con = DBConnection.getConnection();
-            Statement stmt = con.createStatement();
             JdbcRowSet rs = JdbcConnection.getJdbcConnection();
-            rs.setCommand("select * from employee where eid = " + eid);
+            rs.setCommand("SELECT * FROM employee WHERE eid = ?");
+            rs.setInt(1, eid);
             rs.execute();
+
             if (!rs.next()) {
                 System.out.println("No Employee Present with this eid");
             } else {
                 Display.displayEmployeeFunction(rs);
                 System.out.print("Do you really want to raise salary of the above record (Y/N)? ");
                 String confirm = br.readLine();
-                System.out.println("Enter the amount");
+                System.out.println("Enter the amount:");
                 int amount = Integer.parseInt(br.readLine());
+
                 if (confirm.equalsIgnoreCase("Y")) {
-                    stmt.execute("update employee set salary = salary + " + amount + " where EID = " + eid + ";");
+                    rs.updateFloat("salary", rs.getFloat("salary") + amount);
+                    rs.updateRow();
+
                     System.out.println("Employee with eid: " + eid + " salary raised successfully");
                 }
             }
             br.close();
-            stmt.close();
-            con.close();
         } catch (SQLException e) {
             System.out.println(e);
         } catch (Exception e) {
@@ -241,6 +235,7 @@ class MainMenu implements EmpDAO {
         }
     }
 
+    @Override
     public void deleteEmployee(int eid) {
         try {
             JdbcRowSet rs = JdbcConnection.getJdbcConnection();
@@ -260,6 +255,7 @@ class MainMenu implements EmpDAO {
         }
     }
 
+    @Override
     public void searchEmployeeBasedOnId(int searchEid) {
         try {
             JdbcRowSet rs = JdbcConnection.getJdbcConnection();
@@ -278,6 +274,7 @@ class MainMenu implements EmpDAO {
         }
     }
 
+    @Override
     public void searchEmployee(String type, String value) {
         try {
             JdbcRowSet rs = JdbcConnection.getJdbcConnection();
@@ -441,7 +438,7 @@ public class EmpManageApp {
             }
         } while (ch1 != 6);
         JdbcConnection.closeJdbcConnection();
-        DBConnection.closeConnection();
+        // DBConnection.closeConnection();
     }
 }
 
