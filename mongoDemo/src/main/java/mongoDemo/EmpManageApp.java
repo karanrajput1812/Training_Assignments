@@ -215,17 +215,8 @@ class MainMenu implements EmpDAO {
                 default :
                     throw new IllegalArgumentException("Unknown employee type");
             }
-            FindIterable<Document> i = collection.find().projection(projection).sort(asort);
-    		for(Document d : i) {
-    			System.out.println("------------------------------------------------");
-    			System.out.println("Id: " + d.getInteger("id"));
-    			System.out.println("Name: " + d.getString("name"));
-    			System.out.println("Age: " + d.getInteger("age"));
-    			System.out.println("Salary: " + d.getInteger("salary"));
-    			System.out.println("Designation: " + d.getString("designation"));
-    			System.out.println("Department: " + d.getString("department"));
-    			System.out.println("------------------------------------------------");
-    		}
+            FindIterable<Document> empList = collection.find().projection(projection).sort(asort);
+            Display.displayEmployeeFunction(empList);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -241,7 +232,14 @@ class MainMenu implements EmpDAO {
     		if (doc == null) {
                 System.out.println("No Employee Present with this eid");
             } else {
-            	System.out.println(doc);
+            	System.out.println("------------------------------------------------");
+    			System.out.println("Id: " + doc.getInteger("id"));
+    			System.out.println("Name: " + doc.getString("name"));
+    			System.out.println("Age: " +doc.getInteger("age"));
+    			System.out.println("Salary: " + doc.getInteger("salary"));
+    			System.out.println("Designation: " + doc.getString("designation"));
+    			System.out.println("Department: " + doc.getString("department"));
+    			System.out.println("------------------------------------------------");
             	
                 System.out.print("Do you really want to raise salary of the above record (Y/N)? ");
                 
@@ -275,7 +273,15 @@ class MainMenu implements EmpDAO {
             if (doc.isEmpty()) {
                 System.out.println("No Employee Present with this eid");
             } else {
-            	System.out.println(doc);
+            	System.out.println("------------------------------------------------");
+    			System.out.println("Id: " + doc.getInteger("id"));
+    			System.out.println("Name: " + doc.getString("name"));
+    			System.out.println("Age: " +doc.getInteger("age"));
+    			System.out.println("Salary: " + doc.getInteger("salary"));
+    			System.out.println("Designation: " + doc.getString("designation"));
+    			System.out.println("Department: " + doc.getString("department"));
+    			System.out.println("------------------------------------------------");
+    			
                 System.out.print("Do you really want to delete the above record (Y/N)? ");
                 String confirm = br.readLine();
                 if (confirm.equalsIgnoreCase("Y")) {
@@ -294,9 +300,9 @@ class MainMenu implements EmpDAO {
         	MongoCollection<Document> collection = MongoDatabaseConnection.getMongoDatabase();
             Bson filter = Filters.eq("id", searchEid);
             Bson projection = Projections.excludeId();
-            FindIterable<Document> i = collection.find(filter).projection(projection);
-            Display.displayEmployeeFunction(i);
-    		if(getDocumentSize(i) == 0) {
+            FindIterable<Document> empList = collection.find(filter).projection(projection);
+            Display.displayEmployeeFunction(empList);
+    		if(getDocumentSize(empList) == 0) {
     			System.out.println("No Employee Present with this eid");
     		}
         } catch (Exception e) {
@@ -311,9 +317,9 @@ class MainMenu implements EmpDAO {
         	MongoCollection<Document> collection = MongoDatabaseConnection.getMongoDatabase();
             Bson filter = Filters.eq(type, value);
             Bson projection = Projections.excludeId();
-            FindIterable<Document> i = collection.find(filter).projection(projection);
-            Display.displayEmployeeFunction(i);
-    		if(getDocumentSize(i) == 0) {
+            FindIterable<Document> empList = collection.find(filter).projection(projection);
+            Display.displayEmployeeFunction(empList);
+    		if(getDocumentSize(empList) == 0) {
     			System.out.println("No Employee Present with this eid");
     		}
         } catch (Exception e) {
@@ -323,7 +329,7 @@ class MainMenu implements EmpDAO {
     
     public static long getDocumentSize(FindIterable<Document> i) {
 		long count = 0;
-		for(Document d : i) {
+		for(Document doc : i) {
 			count++;
 		}
 		return count;
