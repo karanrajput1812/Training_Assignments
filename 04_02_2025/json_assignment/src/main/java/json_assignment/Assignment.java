@@ -9,24 +9,41 @@ import org.json.JSONObject;
 public class Assignment {
 	  
     public static void main(String[] args) throws SQLException {
-        JSONObject jsonInfo = new JSONObject();
-        jsonInfo.put("name", "Ramesh");
-        jsonInfo.put("email", "Ramesh.rajput@gmail.com");
-        jsonInfo.put("age", 21);
-        jsonInfo.put("active", false);
-
-//        JsonData.insertUser("Ramesh", jsonInfo);
-        JsonData.readUser("Ramesh");
-//        JsonData.deleteUser("Karan");
-        JsonData.updateUser("Ramesh");
-        
+    	int ch2;
+        do {
+            System.out.println("---------------------------------------------");
+            System.out.println("1. Create User");
+            System.out.println("2. Read User");
+            System.out.println("3. Delete User");
+            System.out.println("4. Update User");
+            System.out.println("5. Back");
+            System.out.println("---------------------------------------------");
+            ch2 = new Scanner(System.in).nextInt();
+            switch (ch2) {
+                case 1:
+                	JsonData.insertUser();
+                    break;
+                case 2:
+                	JsonData.readUser();
+                    break;
+                case 3:
+                	JsonData.deleteUser();
+                    break;
+                case 4:
+                	JsonData.updateUser();
+                    break;
+                case 5:
+                    ch2 = 5;
+                    break;
+            }
+        } while (ch2 != 5);
         
         
         JdbcConnection.closeJdbcConnection();
         DatabaseConnection.closeDatabaseConnection();
     }
 }
-class DatabaseConnection{
+final class DatabaseConnection{
 	private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USER = "postgres";
     private static final String PASSWORD = "tiger";
@@ -70,20 +87,31 @@ final class JdbcConnection {
 }
 
 class JsonData {
-    public static void insertUser(String name, JSONObject info) throws SQLException {
-        String sql = "INSERT INTO users (name, info) VALUES (?, ?::jsonb)";
+    public static void insertUser() throws SQLException {
+    	JSONObject jsonInfo = new JSONObject();
+    	System.out.println("Enter user name: ");
+    	String name = new Scanner(System.in).nextLine();
+    	System.out.println("Enter user email: ");
+    	String email = new Scanner(System.in).nextLine();
+    	System.out.println("Enter user age: ");
+    	int age = new Scanner(System.in).nextInt();
+    	
+        jsonInfo.put("name", name);
+        jsonInfo.put("email", email);
+        jsonInfo.put("age", age);
+        jsonInfo.put("active", false);
+        String sql = "INSERT INTO users (info) VALUES (?)";
 
-        Connection conn = DatabaseConnection.getConnection();
-        PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(sql);
 
-        pstmt.setString(1, name);
-        pstmt.setString(2, info.toString());
+        pstmt.setObject(1, jsonInfo.toString(), Types.OTHER);
         pstmt.executeUpdate();
-
         System.out.println("Data inserted successfully.");
     }
     
-    public static void readUser(String name) throws SQLException {
+    public static void readUser() throws SQLException {
+    	System.out.println("Enter user name: ");
+    	String name = new Scanner(System.in).nextLine();
     	String sql = "Select info From Users where info->>'name' = ?";
     	JdbcRowSet rs = JdbcConnection.getJdbcConnection();
     	
@@ -105,7 +133,9 @@ class JsonData {
     	
     }
     
-    public static void deleteUser(String name) throws SQLException {
+    public static void deleteUser() throws SQLException {
+    	System.out.println("Enter user name: ");
+    	String name = new Scanner(System.in).nextLine();
     	JdbcRowSet rs = JdbcConnection.getJdbcConnection();
     	   	
     	rs.setCommand("select * from Users where info->>'name' = ?");
@@ -119,7 +149,9 @@ class JsonData {
         }
     }
     
-    public static void updateUser(String name) throws SQLException {
+    public static void updateUser() throws SQLException {
+    	System.out.println("Enter user name: ");
+    	String name = new Scanner(System.in).nextLine();
     	String updateSql = "UPDATE Users SET info = info || ?::jsonb WHERE info->>'name' = ?";
         PreparedStatement pstmt = DatabaseConnection.getConnection().prepareStatement(updateSql);
         pstmt.setString(1, "{\"active\": true}");
