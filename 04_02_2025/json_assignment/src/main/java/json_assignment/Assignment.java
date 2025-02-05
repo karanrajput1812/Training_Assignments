@@ -1,8 +1,14 @@
 package json_assignment;
 
-import java.sql.*;
-import java.util.*;
-import javax.sql.rowset.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.Scanner;
+
+import javax.sql.rowset.JdbcRowSet;
+import javax.sql.rowset.RowSetProvider;
 
 import org.json.JSONObject;
 

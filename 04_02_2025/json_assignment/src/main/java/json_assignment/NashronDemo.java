@@ -1,8 +1,12 @@
 package json_assignment;
 
 import java.io.FileReader;
-import java.util.*;
-import javax.script.*;
+import java.util.List;
+
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptEngineManager;
 
 public class NashronDemo {
     public static void main(String[] args) {
@@ -10,8 +14,6 @@ public class NashronDemo {
             ScriptEngineManager mgr = new ScriptEngineManager();
             List<ScriptEngineFactory> list = mgr.getEngineFactories();
             list.forEach(sef -> System.out.println(sef.getEngineName()));
-
-
             
             // ScriptEngine engine = mgr.getEngineByName("JavaScript");
             // engine.eval("print('Hello Everybody!')");
