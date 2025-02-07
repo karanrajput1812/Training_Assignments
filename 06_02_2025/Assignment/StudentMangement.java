@@ -14,7 +14,7 @@ class Student {
     Fees fees;
 
     Student() {
-        
+
     }
 
     public int getStandard() {
@@ -41,6 +41,10 @@ class Student {
         return fees.getStudentTotalFees();
     }
 
+    public float getPaidFees() {
+        return fees.getStudentFeesPaid();
+    }
+
     public float getUnpaidFees() {
         return fees.getStudentfeesPending();
     }
@@ -52,7 +56,7 @@ class Fees {
     float feesPaid;
     float feesPending;
 
-    Fees(float totalFees, float feesPaid) { 
+    Fees(float totalFees, float feesPaid) {
         this.totalFees = totalFees;
         this.feesPaid = feesPaid;
         this.feesPending = totalFees - feesPaid;
@@ -61,9 +65,11 @@ class Fees {
     public float getStudentTotalFees() {
         return totalFees;
     }
+
     public float getStudentFeesPaid() {
         return feesPaid;
     }
+
     public float getStudentfeesPending() {
         return feesPending;
     }
@@ -91,9 +97,9 @@ class MainMenu implements Operation {
 
     public void createStudent(List<Student> studentList) {
         Random random = new Random();
-        String[] names = {"John", "Jane", "Alex", "Emily", "Michael", "Sarah", "David", "Laura", "Chris", "Anna"};
-        String[] schools = {"PVM", "CRCE", "DPS", "VVMS", "KV"};    
-        String[] genders = {"Male", "Female"};
+        String[] names = { "John", "Jane", "Alex", "Emily", "Michael", "Sarah", "David", "Laura", "Chris", "Anna" };
+        String[] schools = { "PVM", "CRCE", "DPS", "VVMS", "KV" };
+        String[] genders = { "Male", "Female" };
 
         for (int i = 0; i < 30; i++) {
             Student student = new Student();
@@ -126,14 +132,46 @@ class MainMenu implements Operation {
     }
 
     public void totalStudentPassAndFail(List<Student> studentList) {
-        Map<Boolean, Long> m1 = studentList.stream()
-                .collect(Collectors.partitioningBy(e -> e.getPercentage() >= 40, Collectors.counting()));
-        System.out.println("Total Pass Students: " + m1.get(true));
-        System.out.println("Total Fail Students: " + m1.get(false));
+        int ch2 = 0;
+        do {
+            System.out.println("-------------------------");
+            System.out.println("Enter your choice: ");
+            System.out.println("1. School Wise Pass And Fail");
+            System.out.println("2. All School Pass And Fail");
+            System.out.println("3. Exit");
+            System.out.println("-------------------------");
+            ch2 = new Scanner(System.in).nextInt();
+            switch (ch2) {
+                case 1:
+                    System.out.println("School Wise Pass Fail : ");
+                    Map<String, Map<Boolean, Long>> m1 = studentList.stream()
+                            .collect(Collectors.groupingBy(Student::getSchool,
+                                    Collectors.partitioningBy(e -> e.getPercentage() >= 40, Collectors.counting())));
+                    m1.forEach((school, map) -> {
+                        System.out.println("School: " + school + ", Total Pass Students: " + map.get(true)
+                                + ", Total Fail Students: " + map.get(false));
+                    });
+                    break;
+                case 2:
+                    System.out.println("All School Pass Fail : ");
+                    Map<Boolean, Long> m2 = studentList.stream()
+                            .collect(Collectors.partitioningBy(e -> e.getPercentage() >= 40, Collectors.counting()));
+                    System.out.println("Total Pass Students: " + m2.get(true));
+                    System.out.println("Total Fail Students: " + m2.get(false));
+                    break;
+                case 3: break;
+                default:
+                    ch2 = 3;
+                    break;
+            }
+
+        } while (ch2 != 3);
+
     }
 
     public void topScorerUniversityWise(List<Student> studentList) {
-        List<Student> lsort = studentList.stream().sorted(Comparator.comparing(Student::getPercentage).reversed()).limit(3).collect(Collectors.toList());
+        List<Student> lsort = studentList.stream().sorted(Comparator.comparing(Student::getPercentage).reversed())
+                .limit(3).collect(Collectors.toList());
         lsort.forEach(student -> System.out.println("Name: " + student.name + ", Percentage: " + student.percentage));
     }
 
@@ -143,11 +181,14 @@ class MainMenu implements Operation {
             students.stream()
                     .sorted(Comparator.comparing(Student::getPercentage).reversed())
                     .limit(1)
-                    .forEach(student -> System.out.println("School: " + school + ", Name: " + student.name + ", Percentage: " + student.percentage));
+                    .forEach(student -> System.out.println(
+                            "School: " + school + ", Name: " + student.name + ", Percentage: " + student.percentage));
         });
     }
+
     public void averageOfMaleAndFemale(List<Student> studentList) {
-        Map<String, Double> m1 = studentList.stream().collect(Collectors.groupingBy(Student::getGender, Collectors.averagingInt(Student::getAge)));
+        Map<String, Double> m1 = studentList.stream()
+                .collect(Collectors.groupingBy(Student::getGender, Collectors.averagingInt(Student::getAge)));
         System.out.print("Average Age of Male Students : ");
         System.out.println(m1.get("Male"));
         System.out.print("Average Age of Female Students : ");
@@ -155,20 +196,23 @@ class MainMenu implements Operation {
     }
 
     public void totalFeesSchoolWise(List<Student> studentList) {
-        Map<String, Double> m1 = studentList.stream().collect(Collectors.groupingBy(Student::getSchool, Collectors.summingDouble(Student::getTotalFees)));
-        m1.forEach((school, totalFees) -> System.out.println("Total fees collected from school " + school + " are " + totalFees));
+        Map<String, Double> m1 = studentList.stream()
+                .collect(Collectors.groupingBy(Student::getSchool, Collectors.summingDouble(Student::getPaidFees)));
+        m1.forEach((school, totalFees) -> System.out
+                .println("Total fees collected from school " + school + " are " + totalFees));
     }
 
     public void feesUnpaidSchoolWise(List<Student> studentList) {
-        Map<String, Double> m1 = studentList.stream().collect(Collectors.groupingBy(Student::getSchool, Collectors.summingDouble(Student::getUnpaidFees)));
-        m1.forEach((school, totalFees) -> System.out.println("Total fees pending from school " + school + " are " + totalFees));
+        Map<String, Double> m1 = studentList.stream()
+                .collect(Collectors.groupingBy(Student::getSchool, Collectors.summingDouble(Student::getUnpaidFees)));
+        m1.forEach((school, totalFees) -> System.out
+                .println("Total fees pending from school " + school + " are " + totalFees));
     }
 }
 
 public class StudentMangement {
     public static void main(String[] args) {
 
-        
         List<Student> studentList = new ArrayList<Student>();
         int ch1 = 0, ch2 = 0;
         Scanner sc = new Scanner(System.in);
@@ -190,37 +234,37 @@ public class StudentMangement {
             System.out.println("---------------------------------------------");
             ch1 = sc.nextInt();
             switch (ch1) {
-                case 1 : 
+                case 1:
                     m1.createStudent(studentList);
                     break;
-                case 2 : 
+                case 2:
                     m1.totalStudentStandardWise(studentList);
                     break;
-                case 3 : 
+                case 3:
                     m1.totalStudentZenderWise(studentList);
                     break;
-                case 4 : 
+                case 4:
                     m1.totalStudentPassAndFail(studentList);
                     break;
-                case 5 : 
+                case 5:
                     m1.topScorerUniversityWise(studentList);
                     break;
-                case 6 :
+                case 6:
                     m1.topScorerSchoolWise(studentList);
                     break;
-                case 7 :
+                case 7:
                     m1.averageOfMaleAndFemale(studentList);
                     break;
-                case 8 :
+                case 8:
                     m1.totalFeesSchoolWise(studentList);
                     break;
-                case 9 :
+                case 9:
                     m1.feesUnpaidSchoolWise(studentList);
                     break;
-                case 10 :
+                case 10:
                     System.out.println("Total Number of students: " + studentList.size());
-                    break;  
-                case 0 : 
+                    break;
+                case 0:
                     ch1 = 0;
                     break;
             }
