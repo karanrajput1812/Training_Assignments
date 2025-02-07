@@ -118,17 +118,13 @@ class MainMenu implements Operation {
     }
 
     public void totalStudentStandardWise(List<Student> studentList) {
-        Map<Integer, Long> m1 = studentList.stream()
-                .collect(Collectors.groupingBy(Student::getStandard, Collectors.counting()));
-        m1.entrySet().stream()
-                .forEach(e -> System.out.println("Total students in standard " + e.getKey() + " are " + e.getValue()));
+        Map<Integer, Long> m1 = studentList.stream().collect(Collectors.groupingBy(Student::getStandard, Collectors.counting()));
+        m1.entrySet().stream().forEach(e -> System.out.println("Total students in standard " + e.getKey() + " are " + e.getValue()));
     }
 
     public void totalStudentZenderWise(List<Student> studentList) {
-        Map<String, Long> m1 = studentList.stream()
-                .collect(Collectors.groupingBy(Student::getGender, Collectors.counting()));
-        m1.entrySet().stream()
-                .forEach(e -> System.out.println("Total " + e.getKey() + " students are " + e.getValue()));
+        Map<String, Long> m1 = studentList.stream().collect(Collectors.groupingBy(Student::getGender, Collectors.counting()));
+        m1.entrySet().stream().forEach(e -> System.out.println("Total " + e.getKey() + " students are " + e.getValue()));
     }
 
     public void totalStudentPassAndFail(List<Student> studentList) {
