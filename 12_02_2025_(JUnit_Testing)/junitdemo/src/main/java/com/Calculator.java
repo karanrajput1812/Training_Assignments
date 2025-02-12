@@ -1,6 +1,10 @@
 package com;
 
 public class Calculator {
+//	Calculator()
+//	{
+//		System.out.println("<======== Calculator() Object Created .....");
+//	}
 	public int add(int a, int b) 
 	{
 		return a+b;
@@ -19,5 +23,9 @@ public class Calculator {
 			return a/b;
 		else
 			throw new ArithmeticException();
+	}
+	public int mod(int a, int b)
+	{
+		return a%b;
 	}
 }
