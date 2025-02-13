@@ -2,17 +2,17 @@ package assignment;
 
 class Calculator
 {
-	public void add(int a, int b)
+	public int add(int a, int b)
 	{
-		System.out.println("Addition : "+(a+b));
+		return a+b;
 	}
-	public void sub(int a, int b)
+	public int sub(int a, int b)
 	{
-		System.out.println("Subtract : "+(a-b));
+		return a-b;
 	}
-	public void mul(int a, int b)
+	public int mul(int a, int b)
 	{
-		System.out.println("Multiply : "+(a * b));
+		return a*b;
 	}
 }
 public class CalculatorMain
@@ -22,8 +22,8 @@ public class CalculatorMain
 		System.out.println("Calculator Operations......");
  
 		Calculator c1 = new Calculator();
-		c1.add(10, 20);
-		c1.sub(10, 20);
-		c1.mul(10, 20);
+		System.out.println("Addition : "+ c1.add(10, 20));
+		System.out.println("Substract : "+ c1.sub(10, 20));
+		System.out.println("Multiply : "+ c1.mul(10, 20));
 	}
 }
