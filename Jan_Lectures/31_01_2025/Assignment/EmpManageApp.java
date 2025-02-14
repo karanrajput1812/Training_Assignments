@@ -81,22 +81,6 @@ final class OtherDesignation extends Emp {
     }
 }
 
-// final class DBConnection {
-//     private static Connection con = null;
-
-//     private DBConnection() {
-//     }
-
-//     public static Connection getConnection() throws SQLException {
-//         if (con == null)
-//             con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "tiger");
-//         return con;
-//     }
-
-//     public static void closeConnection() throws SQLException {
-//         con.close();
-//     }
-// }
 
 final class JdbcConnection {
     private static JdbcRowSet rs = null;

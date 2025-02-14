@@ -501,6 +501,7 @@ public class EmpManageApp {
 
 class Menu {
     public static int readChoice(int maxChoice) {
+        
         while (true) {
             System.out.println("Enter your choice:");
             try {
