@@ -21,6 +21,9 @@ public class DemoApplication {
 		String obj = new Scanner(System.in).next();
 		Person p1 = (Person) factory.getBean(obj);
 		System.out.println(p1);
+		
+		Person p2 = (Person) factory.getBean(obj);
+		System.out.println(p2);
 	}
 
 }
