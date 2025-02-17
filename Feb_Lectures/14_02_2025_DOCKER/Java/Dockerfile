@@ -11,4 +11,4 @@ ENV PATH $PATH:$JAVA_HOME/bin
 RUN javac Abc.java
 
 # CMD ["java", "Abc"]
-ENTRYPOINT java Abc
+ENTRYPOINT java Abca

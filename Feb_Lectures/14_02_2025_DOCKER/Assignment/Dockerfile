@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y wget && \
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
 ENV PATH=$PATH:$JAVA_HOME/bin
 
-EXPOSE 8080
+EXPOSE 8080  
+# Expose the port
 
 # Run the application
 # Compile the application
