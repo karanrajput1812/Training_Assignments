@@ -7,12 +7,17 @@ import javax.sql.rowset.RowSetProvider;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.example.demo.database.DatabaseHandler;
+import com.example.demo.models.Customer;
 
 @Controller
 public class MyController {
 	
-
+	DatabaseHandler db = new DatabaseHandler();
+	
 	@RequestMapping("/")
 	public String getFirstPage()
 	{
@@ -34,56 +39,40 @@ public class MyController {
 		return "register.jsp";
 	}
 	
-	@RequestMapping("/signup")
-	public ModelAndView storeUser(int cid, String uname, String pwd, String cpwd) throws SQLException {
-
-		ModelAndView mv = new ModelAndView();
-		JdbcRowSet rs = null;
-		try {
-			rs = RowSetProvider.newFactory().createJdbcRowSet();
-            rs.setUrl("jdbc:postgresql://localhost:5432/postgres");
-            rs.setUsername("postgres");
-            rs.setPassword("tiger");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		if(pwd.equals(cpwd)) {
-			rs.setCommand("SELECT * FROM customer WHERE 1=0");
-            rs.execute();
-            rs.moveToInsertRow();
-            rs.updateInt(1, cid);
-            rs.updateString(2, uname);
-            rs.updateString(3, pwd);
-            rs.insertRow();
-            if(!rs.rowInserted())
-            	  System.out.println("Data inserted successfully.");
-            else
-            	  System.out.println("Data insert failed");
-            mv.addObject("error", "Registered Successfully");
-        	mv.setViewName("login.jsp"); 
-		}
-		else {
-			mv.addObject("error", "Both passwords are not same!!!");
-			mv.setViewName("register.jsp"); 
-		}
-		return mv;
+	@RequestMapping("/register_emp")
+	@ResponseBody
+	public String getResponse() {
+		return "<h1> Registered successfully </h1>";
 	}
+	
+	@RequestMapping("/signup")
+	public ModelAndView storeUser(Customer c) throws SQLException {
+	    String signupResult = db.signup(c.cid, c.uname, c.pwd, c.cpwd);
+	    ModelAndView mv = new ModelAndView();
+
+	    if (c.pwd.equals(c.cpwd)) {
+	    	if (signupResult.equals("Registered Successfully")) {
+	    		mv.addObject("error", signupResult);
+	    		mv.setViewName("login.jsp");
+	    	} else {
+	    		mv.addObject("error", signupResult);
+	    		mv.setViewName("register.jsp");
+	    	}
+	    }
+	    else {
+	    	mv.addObject("error", "Both passwords are not the same!");
+	    	mv.setViewName("register.jsp");
+	    }
+
+	    return mv;
+	}
+
+
+	
 	@RequestMapping("/signin")
-	public ModelAndView verifyUser(int cid, String pwd) throws SQLException {
-		JdbcRowSet rs = null;
-		try {
-			rs = RowSetProvider.newFactory().createJdbcRowSet();
-            rs.setUrl("jdbc:postgresql://localhost:5432/postgres");
-            rs.setUsername("postgres");
-            rs.setPassword("tiger");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public ModelAndView verifyUser(Customer c) throws SQLException {		
+		JdbcRowSet rs = db.signin(c.cid, c.pwd);
 		ModelAndView mv = new ModelAndView();
-			rs.setCommand("SELECT * FROM customer WHERE cid = ? And pwd = ?");
-            rs.setInt(1, cid);
-            rs.setString(2, pwd);
-            rs.execute();
             if (!rs.next()) {
             	mv.addObject("error", "Wrong CID And Password");
     			mv.setViewName("login.jsp"); 
