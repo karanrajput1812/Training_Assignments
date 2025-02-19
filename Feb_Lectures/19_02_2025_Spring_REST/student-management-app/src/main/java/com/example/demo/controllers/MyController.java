@@ -25,7 +25,6 @@ public class MyController {
 		Random random = new Random();
         String[] names = { "Karan", "Madhav", "Sanat", "Crystal", "Johny", "Omkar", "Sarvesh", "Sanchit", "Ramesh", "Rohan" };
         String[] schools = { "PVM", "CRCE", "DPS", "VVMS", "KV" };
-        
         for (int i = 0; i < 20; i++) {
             Student student = new Student();
             student.setName(names[random.nextInt(names.length)]);
