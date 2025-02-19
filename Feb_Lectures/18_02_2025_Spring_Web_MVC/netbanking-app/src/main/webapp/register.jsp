@@ -7,7 +7,7 @@
 			<h1>Welcome to Wissen Banking Services</h1>
 		</center>
 		<h2>Please Register</h2>
-		<form action="register_emp" method="POST">
+		<form action="signup" method="POST">
 			Customer ID : <input type="text" name ="cid"><br>
 			Name : <input type="text" name ="uname"><br>
 			Password : <input type="password" name ="pwd"><br>
