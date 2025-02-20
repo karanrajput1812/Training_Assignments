@@ -22,19 +22,19 @@ public class MyController {
 	
 	List<Student> list = new ArrayList<Student>();
 	public MyController() {
-		Random random = new Random();
-        String[] names = { "Karan", "Madhav", "Sanat", "Crystal", "Johny", "Omkar", "Sarvesh", "Sanchit", "Ramesh", "Rohan" };
-        String[] schools = { "PVM", "CRCE", "DPS", "VVMS", "KV" };
-        for (int i = 0; i < 20; i++) {
-            Student student = new Student();
-            student.setName(names[random.nextInt(names.length)]);
-            student.setRollNo(random.nextInt(30));
-            student.setStandard(random.nextInt(12) + 1);
-            student.setSchool(schools[random.nextInt(schools.length)]);
-            student.setPercentage(random.nextFloat() * 100);
-            list.add(student);
-        }
-        System.out.println(list);
+//		Random random = new Random();
+//        String[] names = { "Karan", "Madhav", "Sanat", "Crystal", "Johny", "Omkar", "Sarvesh", "Sanchit", "Ramesh", "Rohan" };
+//        String[] schools = { "PVM", "CRCE", "DPS", "VVMS", "KV" };
+//        for (int i = 0; i < 20; i++) {
+//            Student student = new Student();
+//            student.setName(names[random.nextInt(names.length)]);
+//            student.setRollNo(random.nextInt(30));
+//            student.setStandard(random.nextInt(12) + 1);
+//            student.setSchool(schools[random.nextInt(schools.length)]);
+//            student.setPercentage(random.nextFloat() * 100);
+//            list.add(student);
+//        }
+//        System.out.println(list);
 	}
 	
 //	/students			 - get all students
