@@ -1,12 +1,26 @@
 package com.example.demo.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+
+@Entity
+@Table(name ="Student")
 public class Student {
+	@Id
+	private int univRegNo;	
 	private int rollNo;
 	private String name;
 	private int standard;
 	private String school;
 	private float percentage;
+	public int getUnivRegNo() {
+		return univRegNo;
+	}
+	public void setUnivRegNo(int univRegNo) {
+		this.univRegNo = univRegNo;
+	}
 	
 	public int getRollNo() {
 		return rollNo;
@@ -41,3 +55,4 @@ public class Student {
 	
 	
 }
+

@@ -1,7 +1,14 @@
-package com.example.demo.models;
+package com.example.demo.entities2;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 
-public class Student {
+@Entity
+@Table(name ="Student")
+public class UniversityStudent {
+	@Id
 	private int rollNo;
 	private String name;
 	private int standard;
@@ -41,3 +48,4 @@ public class Student {
 	
 	
 }
+

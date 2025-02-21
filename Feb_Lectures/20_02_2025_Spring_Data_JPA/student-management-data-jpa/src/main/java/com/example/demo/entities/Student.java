@@ -13,7 +13,7 @@ public class Student {
 	private String name;
 	private int standard;
 	private String school;
-//	private float percentage;
+	private float percentage;
 	
 	public int getRollNo() {
 		return rollNo;
@@ -39,12 +39,12 @@ public class Student {
 	public void setSchool(String school) {
 		this.school = school;
 	}
-//	public float getPercentage() {
-//		return percentage;
-//	}
-//	public void setPercentage(float percentage) {
-//		this.percentage = percentage;
-//	}
+	public float getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(float percentage) {
+		this.percentage = percentage;
+	}
 	
 	
 }
