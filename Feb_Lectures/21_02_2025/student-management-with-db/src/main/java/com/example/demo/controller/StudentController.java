@@ -11,14 +11,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.models.ClassTeacher;
 import com.example.demo.models.Student;
 import com.example.demo.services.StudentService;
+import com.example.demo.services.TeacherService;
 
 @RestController
 public class StudentController {
 
 	@Autowired
 	StudentService studentService;
+	
+	@Autowired
+	TeacherService tse;
 	
 		
 	@GetMapping("/students")
@@ -75,7 +80,6 @@ public class StudentController {
     public List<Student> getTopperByStandard(@PathVariable int std) {
         return studentService.findTopperByStandard(std);
     }
-    
 
 	
 }

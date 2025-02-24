@@ -6,24 +6,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.ClassTeacher;
+import com.example.demo.models.Student;
+import com.example.demo.repos.StudentDao;
 import com.example.demo.repos.TeacherDao;
 
 @Service
 public class TeacherService {
+    
+    @Autowired
+    private TeacherDao teacherDao;
 
-	@Autowired
-	TeacherDao teacher;
-	
-	public String AddTeacher(ClassTeacher cls) {
-		teacher.save(cls);
-		return "Teacher Added Succesfully";
-	}
-	
-	public List<ClassTeacher> GetTeacher() {
-		return teacher.findAll();
-	}
-	
-	public ClassTeacher getClassTeacher(int univRegNo) {
-		return teacher.findClassTeacherByUnivReg(univRegNo);
-	}
+    public String addTeacher(ClassTeacher cls) {
+        teacherDao.save(cls);
+        return "Teacher Added Successfully";
+    }
+
+    public List<ClassTeacher> getTeacher() {
+        return teacherDao.findAll();
+    }
+
+//    public ClassTeacher getClassTeacher(int univRegNo) {
+//        return teacherDao.findClassTeacherByUnivReg(univRegNo);
+//    }
+    
+    @Autowired
+    StudentDao studentDao;
+    
+    public ClassTeacher getClassTeacher(int univRegNo) {
+        Student student = studentDao.findByUnivRegNo(univRegNo);
+        if (student == null || student.getClassTeacher() == null) {
+            throw new RuntimeException("Class Teacher not found for student with UnivRegNo: " + univRegNo);
+        }
+        return student.getClassTeacher();
+    }
 }

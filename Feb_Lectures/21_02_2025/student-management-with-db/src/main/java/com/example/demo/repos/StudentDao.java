@@ -26,4 +26,6 @@ public interface StudentDao extends JpaRepository<Student, Integer>{
 
 	@Query("FROM Student WHERE standard = ?1 ORDER BY percentage DESC")
 	public List<Student> findTopperByStandard(int std);
+	
+	public Student findByUnivRegNo(int univRegNo);
 }

@@ -38,21 +38,21 @@ class StudentControllerTest {
 		Mockito.when(stuService.getStudents()).thenReturn(list);
 	}
 
-//	@Test
-//	void testAddStudents() throws Exception {
-//		Student student = new Student();
-//		Mockito.when(stuService.addStudents(Mockito.any(Student.class))).thenReturn("Student Added Successfully");
-//
-//		mockMvc.perform(MockMvcRequestBuilders.post("/students")).andExpect(MockMvcResultMatchers.status().is(200));
-//	}
-//
-//	@Test
-//	void testAddDemoStudents() throws Exception {
-//		List<Student> students = Arrays.asList(new Student(), new Student());
-//		Mockito.when(stuService.addDemoStudents(Mockito.anyList())).thenReturn("Demo Student Added Successfully");
-//
-//		mockMvc.perform(MockMvcRequestBuilders.post("/demostudents")).andExpect(status().isOk());
-//	}
+	@Test
+	void testAddStudents() throws Exception {
+		Student student = new Student();
+		Mockito.when(stuService.addStudents(Mockito.any(Student.class))).thenReturn("Student Added Successfully");
+
+		mockMvc.perform(MockMvcRequestBuilders.post("/students")).andExpect(MockMvcResultMatchers.status().is(200));
+	}
+
+	@Test
+	void testAddDemoStudents() throws Exception {
+		List<Student> students = Arrays.asList(new Student(), new Student());
+		Mockito.when(stuService.addDemoStudents(Mockito.anyList())).thenReturn("Demo Student Added Successfully");
+
+		mockMvc.perform(MockMvcRequestBuilders.post("/demostudents")).andExpect(status().isOk());
+	}
 
 
 	@Test
