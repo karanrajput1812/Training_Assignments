@@ -1,0 +1,10 @@
+CREATE TABLE car(
+	cid SERIAL PRIMARY KEY,
+	company VARCHAR(20) NOT NULL,
+	model VARCHAR(20) NOT NULL,
+	seater int NOT NULL,
+	fueltype VARCHAR(15) NOT NULL,
+	type VARCHAR(15) NOT NULL,
+	price NUMERIC(10, 2) NOT NULL,
+	sold BOOLEAN NOT NULL
+);

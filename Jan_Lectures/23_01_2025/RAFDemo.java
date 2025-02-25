@@ -1,4 +1,4 @@
-import java.io.*;
+import java.io.RandomAccessFile;
 
 public class RAFDemo {
     public static void main(String[] args) {

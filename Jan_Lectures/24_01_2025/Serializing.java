@@ -1,4 +1,5 @@
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 public class Serializing {
     public static void main(String[] args) {
