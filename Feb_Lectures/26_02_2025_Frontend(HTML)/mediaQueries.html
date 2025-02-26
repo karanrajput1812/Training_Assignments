@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @media screen and (max-width: 1000px) {
+            body {
+                background-color: red;
+                color: yellow;
+            }
+        }
+        @media screen and (max-width: 700px) {
+            body {
+                background-color: purple;
+                color: white;
+            }
+        }
+        div {
+            width: 100px;
+            height: 100px;
+            background-color: purple;
+            color: white;
+            margin: 50px;
+            padding: 20px;
+            animation-name: p2w;
+            animation-duration: 5s;
+            animation-delay: 5s;
+            animation-iteration-count: 5;
+        }
+        @keyframes p2w {
+            from { background-color: purple;}
+            to { background-color: white; color: purple;}
+        }
+        
+    </style>
+</head>
+
+<body>
+    <h1>THIS IS TO DEMONSTRATE MEDIA QUERY</h1>
+    <hr>
+    <h2>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Omnis aut similique beatae ipsam in, incidunt ipsum
+        distinctio numquam voluptate rerum quis vero est laboriosam recusandae nobis, quam magnam, provident nesciunt.
+    </h2>
+    <hr>
+        <div>HI KEEP LOOKING AT ME AS I AM CHANGING GRADUALLY MY COLOR</div>
+    <hr>
+    <h3>Thank You</h3>
+
+</body>
+
+</html>

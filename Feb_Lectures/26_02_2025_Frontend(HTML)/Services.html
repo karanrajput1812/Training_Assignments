@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Bank</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #002D62;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .aside {
+            flex: 1 1 20%;
+            background-color: #004080;
+            color: white;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .aside h3 {
+            text-align: center;
+            border-bottom: 2px solid #FFD700;
+            padding-bottom: 10px;
+        }
+
+        .aside ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .aside ul li {
+            padding: 10px;
+            border-bottom: 1px solid #fff;
+        }
+
+        .aside ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .aside ul li a:hover {
+            background-color: #FFD700;
+            color: #002D62;
+            padding-left: 10px;
+        }
+
+        .main {
+            width: 75%;
+            padding: 20px;
+        }
+
+        .main h2 {
+            color: #004080;
+        }
+
+        .main>div {
+            font-size: 18px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .main ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        footer {
+            clear: both;
+            text-align: center;
+            padding: 10px;
+            background-color: #002D62;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            aside {
+                width: 100%;
+                float: none;
+                text-align: center;
+            }
+
+            .main {
+                width: 100%;
+                float: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>OUR BANK</h1>
+        <h3>Banking at Your Doorstep</h3>
+    </header>
+    <div class="container">
+        <div class="aside">
+            <h3>Navigation</h3>
+            <ul>
+                <li><a href="OurBank.html">Home</a></li>
+                <li><a href="AboutUs.html">About Us</a></li>
+                <li><a href="Services.html">Services</a></li>
+                <li><a href="NetBanking.html">Net Banking</a></li>
+                <li><a href="ContactUs.html">Contact Us</a></li>
+            </ul>
+        </div>
+        <section class="main">
+            <h2>Services</h2>
+            <div>
+                <h4>Our Bank offers a wide range of services to its customers. Some of the services are:</h4>
+                <ol>
+                    <li>Account Opening</li>
+                    <li>Loan Services</li>
+                    <li>Net Banking</li>
+                    <li>Mobile Banking</li>
+                    <li>ATM Services</li>
+                    <li>Locker Facility</li>
+                </ol>
+            </div>
+        </section>
+    </div>
+    <footer>
+        © 2024 Our Bank | www.ourbank.com
+    </footer>
+</body>
+
+</html>
