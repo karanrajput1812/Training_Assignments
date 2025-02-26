@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Selectors</title>
+    <style>
+        p.one {
+            color: red;
+        }
+
+        p.two {
+            color: blue;
+        }
+
+        .three {
+            color: purple;
+        }
+
+        #four {
+            color: green;
+        }
+
+        span {
+            color: brown;
+        }
+
+        span>span {
+            background-color: lime;
+        }
+
+        p::first-letter {
+            color: red;
+            font-size: 50px;
+        }
+
+        h1::before {
+            content: "Welcome Mr./Mrs. ";
+        }
+        h1::after {
+            content: " Have a pleasant stay here.";
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Reddy</h1>
+    <h1>Singh</h1>
+    <h1>Khan</h1>
+    <p class="one">This is from first paragraph</p>
+    <p id="four">This is from second paragraph</p>
+    <p class="two">This is from third paragraph</p>
+    <p class="three">This is from fourth paragraph</p>
+    <div class="three">This is from div block</div>
+    <br>
+    <span class="">This is <span>from</span> span tag</span><br>
+    <span class="">This is from span tag</span><br>
+    <span class="">This is from span tag</span><br>
+    <p>This is for the pseudo elements demo. This is for the pseudo elements demo. This is for the pseudo elements demo. This is for the pseudo elements demo.</p>
+
+</body>
+
+</html>
