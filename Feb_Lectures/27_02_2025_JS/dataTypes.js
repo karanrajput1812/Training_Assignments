@@ -1,0 +1,30 @@
+var a;
+console.log("a value is: " + a + "<br>");
+console.log(typeof a + "<br>");
+a = 10;
+console.log("a value is: " + a + "<br>");
+console.log(typeof a + "<br>");
+a = false;
+console.log("a value is: " + a + "<br>");
+console.log(typeof a + "<br>");
+a = "hello";
+console.log("a value is: " + a + "<br>");
+console.log(typeof a + "<br>");
+a = 3.43;
+console.log("a value is: " + a + "<br>");
+console.log(typeof a + "<br>");
+a = new Date();
+console.log("a value is: " + a + "<br>");
+console.log(typeof a + "<br>");
+a = null;
+console.log("a value is: " + a + "<br>");
+console.log(typeof a + "<br>");
+a = () => {};
+console.log("a value is: " + a + "<br>");
+console.log(typeof a + "<br>");
+console.log("-----------------------------<br>");
+
+const b = 20;  // redeclaration is not allowed
+console.log("b value is: " + b + "<br>");
+let c = 40;  
+console.log("c value is: " + c + "<br>");

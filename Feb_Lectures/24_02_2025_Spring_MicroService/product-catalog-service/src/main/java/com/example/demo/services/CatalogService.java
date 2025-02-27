@@ -15,7 +15,6 @@ import com.example.demo.beans.Product;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
  
 @Service
-
 public class CatalogService {
 
 	@Autowired
