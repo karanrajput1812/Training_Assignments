@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOM Demo</title>
+    <script>
+        function closePage() {
+            var flag =  window.confirm("Do you really want to close the page?");
+            if(flag) {
+                window.close();
+            }
+        }
+        function greet() {
+            var name = prompt("Please Enter your name : ");
+            document.write("Good Morning " + name);
+        }
+    </script>
+</head>
+<body>
+    <h1>Browser Object Model</h1>
+    <hr>
+    <h2>Window Object</h2>
+    <script>
+        document.write("window is root object.");
+        // alert("Good Morning Everyone");
+
+    </script>
+    <br>
+    <br>
+    <input type="button" value="CLOSE" onclick="closePage()">
+    <input type="button" value="GREET" onclick="greet()">
+    <hr>
+    <h1>Location Object</h1>
+    <script>
+        document.write("location is to keep track of the current url.<br>");
+        document.write("Protocol: " + location.protocol + "<br>");
+        document.write("Resource Path: " + location.pathname + "<br>");
+        // location.assign("abc.html");
+        // location.href = "abc.html";
+    </script>
+    <hr>
+    <h2>History Object</h2>
+    <script>
+        document.write("history is to keep track of the sites/url visited.<br>");
+        // history.back();
+        // history.forward();
+    </script>
+    <hr>
+    <h2>Navigator Object</h2>
+    <script>
+        document.write("navigator is to keep track of the browser details.<br>");
+        document.write(navigator.appVersion + "<br>");
+        document.write(navigator.appCodeName + "<br>");
+        document.write(navigator.appName + "<br>");
+    </script>  
+    <hr>
+    <h2>Screen Object</h2>
+    <script>
+        document.write("screen is to keep track of the screen details.<br>");
+        document.write("Width: " + screen.width + "<br>");
+        document.write("Height: " + screen.height + "<br>");
+        document.write("Color Depth: " + screen.colorDepth + "<br>");
+        document.write("Pixel Depth: " + screen.pixelDepth + "<br>");
+    </script>
+    <hr>
+    <h3>Thank You</h3>
+</body>
+</html>
