@@ -1,7 +1,7 @@
-
 function add(a,b) {
     console.log("Addition is: " + (a+b));
 }
+
 var sum = add;
 
 var sub = function(a,b) {

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Bank - Banking at Your Doorstep</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        const loanCalculator = `<section class="main" id="loan_calculator">
+            <h2>Loan Calculator</h2>
+            <br>
+            <button class="submit-btn" onclick="loadDepositCalculator() style="color: black; background-color: white;">
+                👉🏻 Click Here For Deposit Calculator
+            </button>
+            <br>
+            <br>
+            <div class="contact-form">
+            <h3>Enter the below details</h3>
+            <form id="loan_form">
+                <div class="form-group">
+                <label for="name">Applicant</label>
+                <input type="text" id="name" name="name" placeholder="Enter applicant name" required>
+                </div>
+                <div class="form-group">
+                <label for="type">Type</label>
+                <select id="type" name="type" onchange="updatedInterest()">
+                    <option value="">Select a type</option>
+                    <option value="home">Home</option>
+                    <option value="car">Car</option>
+                    <option value="personal">Personal</option>
+                </select>
+                </div>
+                <div class="form-group">
+                <label for="interest">Interest</label>
+                <input type="number" id="interest" name="interest" placeholder="Enter Interest" required>
+                </div>
+                <div class="form-group">
+                <label for="tenure">Tenure</label>
+                <input type="number" id="tenure" name="tenure" placeholder="Enter Tenure" required>
+                </div>
+                <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" id="amount" name="amount" placeholder="Enter Amount" required>
+                </div>
+                <button type="submit" class="submit-btn" onclick="calculateEMI(event)">Calculate EMI</button>
+                <br>
+                <h1 class="emi"></h1>
+                    <br>
+                    <br>
+            </form>
+            <p onclick="loadMainPage()"><a><- Go Back</a></p>
+            </div>
+        </section>`;
+        const depositCalculator = `<section class="main" id="deposit_calculator">
+            <h2>Deposit Calculator</h2>
+            <br>
+            <button class="submit-btn" onclick="loadLoanCalculator()">
+                👉🏻 Click Here For Loan Calculator
+            </button>
+            <br>
+            <br>
+            <div class="contact-form">
+            <h3>Enter the below details</h3>
+            <form id="depositFrom">
+                    <div class="form-group">
+                        <label for="amount">Principal Amount</label>
+                        <input type="number" id="amount" name="amount" placeholder="Enter Principal Amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tenure">Tenure</label>
+                        <input type="number" id="tenure" name="tenure" placeholder="Enter Tenure" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interest">Interest</label>
+                        <input type="number" id="interest" name="interest" placeholder="Enter Interest" readonly value="7.0">
+                    </div>
+                    <button type="submit" class="submit-btn" onclick="calculateMaturity(event)">Calculate Maturity</button>
+                    <br>
+                    <br>
+                    <h1 class="maturity"></h1>
+                    <br>
+                </form>
+                <p onclick="loadMainPage()"><a><- Go Back</a></p>
+            </div>
+        </section>`;
+        const mainPage = `<section class="main" id="main">
+            <h2>Loan Calculator</h2>
+            <div class="contact-container">
+                <div class="contact-card">
+                    <h3>Loan Calculator</h3>
+                    <button class="submit-btn" onclick="loadLoanCalculator()">
+                        Click Here
+                    </button>
+                </div>
+
+                <div class="contact-card">
+                    <h3>Deposit Calculator</h3>
+                    <button class="submit-btn" onclick="loadDepositCalculator()">
+                        Click Here
+                    </button>
+                </div>
+            </div>
+        </section>`;
+        function loadLoanCalculator() {
+            const mainContainer = document.getElementById("main");
+            mainContainer.innerHTML = loanCalculator;
+        }
+
+        function loadDepositCalculator() {
+            const mainContainer = document.getElementById("main");
+            mainContainer.innerHTML = depositCalculator;
+        }
+        function loadMainPage() {
+            const mainContainer = document.getElementById("main");
+            mainContainer.innerHTML = mainPage;
+        }
+
+        function calculateEMI(event) {
+            event.preventDefault();
+            let loanType = document.getElementById('type').value;
+            let loanTenure = parseFloat(document.getElementById('tenure').value);
+            let loanAmount = parseFloat(document.getElementById('amount').value);
+            let loanInterest = parseFloat(document.getElementById('interest').value);
+            if (loanType === 'home') {
+                if (loanTenure > 30) {
+                    alert("Tenure for home loan should be less than or equal to 30 years.");
+                    return;
+                }
+                if (loanAmount < 500000 || loanAmount > 10000000) {
+                    alert("Amount for home loan should be between 5 lakh to 1 crore.");
+                    return;
+                }
+            } else if (loanType == 'car') {
+                if (loanTenure > 7) {
+                    alert("Tenure for car loan should be less than or equal to 7 years.");
+                    return;
+                }
+                if (loanAmount < 100000 || loanAmount > 1500000) {
+                    alert("Amount for car loan should be between 1 lakh to 15 lakh.");
+                    return;
+                }
+            } else if (loanType == 'personal') {
+                if (loanTenure > 5) {
+                    loanTenure = loanTenure * 12;
+                    alert("Tenure for personal loan should be less than or equal to 7 years.");
+                    return;
+                }
+                if (loanAmount < 10000 || loanAmount > 500000) {
+                    alert("Amount for personal loan should be between 10 Thousand to 5 lakh.");
+                    return;
+                }
+            }
+            loanInterest = loanInterest / 1200;
+            loanTenure = loanTenure * 12;
+            const emi = (loanAmount * loanInterest * Math.pow(1 + loanInterest, loanTenure)) / (Math.pow(1 + loanInterest, loanTenure) - 1);
+            // let emi = (loanAmount * loanInterest * Math.pow(1 + loanInterest, loanTenure)) / (Math.pow(1 + monthlyRate, months) - 1);
+            document.querySelector('.emi').textContent = `EMI: ${emi.toFixed(2)}`;
+
+        }
+
+        function updatedInterest() {
+            var type = document.getElementById('type').value;
+            let interestRate = 0;
+            if (type === 'home') {
+                interestRate = 9;
+            } else if (type === 'car') {
+                interestRate = 11;
+            } else if (type === 'personal') {
+                interestRate = 15;
+            }
+            document.getElementById('interest').value = interestRate;
+        }
+
+
+        function calculateMaturity(event) {
+            event.preventDefault();
+            const depositAmount = parseFloat(document.getElementById('amount').value);
+            const depositTenure = parseFloat(document.getElementById('tenure').value);
+            const depositInterest = 7.0;
+            if (depositTenure > 7) {
+                alert("Tenure for deposit should be less than or equal to 7 years.");
+                return;
+            }
+            const maturity = depositAmount * Math.pow(1 + depositInterest / 100, depositTenure);
+            document.querySelector('.maturity').textContent = `Maturity Amount: ${maturity.toFixed(2)}`;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>OUR BANK</h1>
+        <h3>Banking at Your Doorstep</h3>
+    </header>
+    <div class="container">
+        <div class="aside">
+            <h3>Navigation</h3>
+            <ul>
+                <li><a href="OurBank.html">Home</a></li>
+                <li><a href="AboutUs.html">About Us</a></li>
+                <li><a href="Services.html" class="active">Services</a></li>
+                <li><a href="NetBanking.html">Net Banking</a></li>
+                <li><a href="ContactUs.html">Contact Us</a></li>
+            </ul>
+        </div>
+        <section class="main" id="main">
+            <h2>Loan Calculator</h2>
+            <div class="contact-container">
+                <div class="contact-card">
+                    <h3>Loan Calculator</h3>
+                    <button class="submit-btn" onclick="loadLoanCalculator()">
+                        Click Here
+                    </button>
+                </div>
+
+                <div class="contact-card">
+                    <h3>Deposit Calculator</h3>
+                    <button class="submit-btn" onclick="loadDepositCalculator()">
+                        Click Here
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <br>
+    <footer>
+        &copy; 2025 Our Bank | www.ourbank.com | Secure Banking for a Better Future
+    </footer>
+    <br>
+</body>
+
+</html>

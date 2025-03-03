@@ -8,7 +8,7 @@ console.log(parseFloat(b)+5);
 console.log(Number(b)+5);
 
 var c = " 3 + 5 - 8 * 2";
-console.log(eval(c));
+console.log(eval(c));       
 
 var d = "2010.95ABC";
 console.log(parseFloat(d) + 5);
