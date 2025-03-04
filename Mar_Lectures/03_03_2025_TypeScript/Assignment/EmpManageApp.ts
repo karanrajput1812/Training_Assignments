@@ -140,186 +140,7 @@ function updateEmployeeCount(): void {
     }
 }
 
-function addEmployee(event: Event): void {
-    event.preventDefault();
-    
-    const nameInput = document.getElementById('name') as HTMLInputElement;
-    const ageInput = document.getElementById('age') as HTMLInputElement;
-    const salaryInput = document.getElementById('salary') as HTMLInputElement;
-    const designationInput = document.getElementById('designation') as HTMLSelectElement;
-    const departmentInput = document.getElementById('department') as HTMLInputElement;
-    const msgElement = document.getElementById('msg');
-    
-    const name = nameInput.value.trim();
-    const age = parseInt(ageInput.value);
-    const salary = parseInt(salaryInput.value);
-    const designation = designationInput.value.trim();
-    const department = departmentInput.value.trim();
-    
-    // Validation
-    if (!name || !age || !salary || !designation || !department) {
-        if (msgElement) msgElement.textContent = "All fields are required!";
-        return;
-    }
-    
-    if (name.split(' ').length < 2 || !(/^[A-Z]/.test(name))) {
-        if (msgElement) msgElement.textContent = "Name must start with a capital letter and contain at least two words";
-        return;
-    }
-    
-    if (age < 20 || age > 60) {
-        if (msgElement) msgElement.textContent = "Age must be between 20 and 60";
-        return;
-    }
-    
-    // Create the employee
-    try {
-        const newEmployee = EmpFactory.createEmp(designation, name, age, salary, department);
-        
-        employees.set(newEmployee.getEid(), newEmployee);
-        
-        // Reset form and show success message
-        (document.getElementById('addEmpForm') as HTMLFormElement).reset();
-        if (msgElement) msgElement.textContent = "Employee added successfully!";
-        
-        // Update employee count
-        updateEmployeeCount();
-        
-        // Refresh the table if we're on the display section
-        if (document.getElementById('employeeTableBody')) {
-            refreshEmployeeTable();
-        }
-    } catch (error) {
-        if (msgElement) msgElement.textContent = "Error adding employee: " + error;
-    }
-}
-
-function refreshEmployeeTable(): void {
-    const tableBody = document.getElementById('employeeTableBody');
-    if (!tableBody) return;
-    
-    // Clear the table
-    tableBody.innerHTML = '';
-    
-    if (employees.size === 0) {
-        const row = document.createElement('tr');
-        const cell = document.createElement('td');
-        cell.colSpan = 6; // Updated for EID column
-        cell.textContent = "No employees found";
-        cell.style.textAlign = "center";
-        row.appendChild(cell);
-        tableBody.appendChild(row);
-        return;
-    }
-    
-    // Add all employees to the table
-    employees.forEach(employee => {
-        const row = document.createElement('tr');
-        
-        const eidCell = document.createElement('td');
-        eidCell.textContent = employee.getEid().toString();
-        row.appendChild(eidCell);
-        
-        const nameCell = document.createElement('td');
-        nameCell.textContent = employee.getName();
-        row.appendChild(nameCell);
-        
-        const ageCell = document.createElement('td');
-        ageCell.textContent = employee.getAge().toString();
-        row.appendChild(ageCell);
-        
-        const salaryCell = document.createElement('td');
-        salaryCell.textContent = employee.getSalary().toString();
-        row.appendChild(salaryCell);
-        
-        const designationCell = document.createElement('td');
-        designationCell.textContent = employee.getDesignation();
-        row.appendChild(designationCell);
-        
-        const departmentCell = document.createElement('td');
-        departmentCell.textContent = employee.getDepartment();
-        row.appendChild(departmentCell);
-        
-        tableBody.appendChild(row);
-    });
-}
-
-function deleteEmployee(event: Event): void {
-    event.preventDefault();
-    
-    const idInput = document.getElementById('removeId') as HTMLInputElement;
-    const msgElement = document.getElementById('removeMsg');
-    
-    const id = parseInt(idInput.value);
-    
-    if (isNaN(id)) {
-        if (msgElement) msgElement.textContent = "Please enter a valid ID";
-        return;
-    }
-    
-    if (!employees.has(id)) {
-        if (msgElement) msgElement.textContent = "Employee with ID " + id + " not found";
-        return;
-    }
-    
-    // Handle CEO deletion specially
-    const employeeToDelete = employees.get(id);
-    if (employeeToDelete instanceof CEO) {
-        CEO.resetCEO();
-    }
-    
-    employees.delete(id);
-    Emp.decrementCountEmp();
-    
-    if (msgElement) msgElement.textContent = "Employee deleted successfully";
-    
-    // Update employee count
-    updateEmployeeCount();
-    
-    // Reset form
-    (document.getElementById('deleteEmployeeForm') as HTMLFormElement).reset();
-    
-    // Refresh table if on display page
-    if (document.getElementById('employeeTableBody')) {
-        refreshEmployeeTable();
-    }
-}
-
-function updateEmployeeSalary(event: Event): void {
-    event.preventDefault();
-    
-    const idInput = document.getElementById('updateId') as HTMLInputElement;
-    const salaryInput = document.getElementById('updateSalary') as HTMLInputElement;
-    const msgElement = document.getElementById('updateMsg');
-    
-    const id = parseInt(idInput.value);
-    const salary = parseInt(salaryInput.value);
-    
-    if (isNaN(id) || isNaN(salary)) {
-        if (msgElement) msgElement.textContent = "Please enter valid values";
-        return;
-    }
-    
-    if (!employees.has(id)) {
-        if (msgElement) msgElement.textContent = "Employee with ID " + id + " not found";
-        return;
-    }
-    
-    const employee = employees.get(id);
-
-    if (employee) {
-        employee.setSalary(salary);
-        if (msgElement) msgElement.textContent = "Salary updated successfully";
-        
-        (document.getElementById('updateEmployeeForm') as HTMLFormElement).reset();
-        
-        if (document.getElementById('employeeTableBody')) {
-            refreshEmployeeTable();
-        }
-    }
-}
-
-function searchEmployees(event: Event): void {
+async function searchEmployees(event: Event): void {
     event.preventDefault();
     
     const searchTypeSelect = document.getElementById('searchType') as HTMLSelectElement;
@@ -335,69 +156,59 @@ function searchEmployees(event: Event): void {
         resultsDiv.innerHTML = '<p class="error">Please enter a search value</p>';
         return;
     }
-    const foundEmployees: Emp[] = [];
     
-    employees.forEach(employee => {
-        let match = false;
-        
-        switch (searchType) {
-            case 'eid':
-                match = employee.getEid().toString() === searchValue;
-                break;
-            case 'name':
-                match = employee.getName().toLowerCase().includes(searchValue.toLowerCase());
-                break;
-            case 'designation':
-                match = employee.getDesignation().toLowerCase() === searchValue.toLowerCase();
-                break;
-            case 'department':
-                match = employee.getDepartment().toLowerCase().includes(searchValue.toLowerCase());
-                break;
+    let url = `http://localhost:8181/getBy${searchType}/${searchValue}`;
+    
+    try {
+        let response = await fetch(url);
+        if (!response.ok) {
+            resultsDiv.innerHTML = `<p class="error">Error: ${response.statusText}</p>`;
+            return;
         }
         
-        if (match) {
-            foundEmployees.push(employee);
-        }
-    });
-    
-    if (foundEmployees.length === 0) {
-        resultsDiv.innerHTML = '<p>No employees found matching your search criteria</p>';
-    } else {
-       let html = `
-            <h3>Search Results (${foundEmployees.length} found)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>EID</th>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Salary</th>
-                        <th>Designation</th>
-                        <th>Department</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
+        let foundEmployees = await response.json();
         
-        foundEmployees.forEach(emp => {
-            html += `
-                <tr>
-                    <td>${emp.getEid()}</td>
-                    <td>${emp.getName()}</td>
-                    <td>${emp.getAge()}</td>
-                    <td>${emp.getSalary()}</td>
-                    <td>${emp.getDesignation()}</td>
-                    <td>${emp.getDepartment()}</td>
-                </tr>
+        if (foundEmployees.length === 0) {
+            resultsDiv.innerHTML = '<p>No employees found matching your search criteria</p>';
+        } else {
+            let html = `
+                <h3>Search Results (${foundEmployees.length} found)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>EID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Salary</th>
+                            <th>Designation</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+                    <tbody>
             `;
-        });
-        
-        html += `
-                </tbody>
-            </table>
-        `;
-        
-        resultsDiv.innerHTML = html;
+            
+            foundEmployees.forEach((emp: any) => {
+                html += `
+                    <tr>
+                        <td>${emp.eid}</td>
+                        <td>${emp.name}</td>
+                        <td>${emp.age}</td>
+                        <td>${emp.salary}</td>
+                        <td>${emp.designation}</td>
+                        <td>${emp.department}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            resultsDiv.innerHTML = html;
+        }
+    } catch (error) {
+        resultsDiv.innerHTML = `<p class="error">Error: ${error}</p>`;
     }
 }
 document.addEventListener('DOMContentLoaded', () => {
@@ -478,10 +289,10 @@ function renderSection(section) {
                     <div class="form-group">
                         <label for="searchType">Search By</label>
                         <select id="searchType" name="searchType" required>
-                            <option value="eid">Employee ID</option>
-                            <option value="name">Name</option>
-                            <option value="designation">Designation</option>
-                            <option value="department">Department</option>
+                            <option value="Id">Employee ID</option>
+                            <option value="Name">Name</option>
+                            <option value="Designation">Designation</option>
+                            <option value="Separtment">Department</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -533,4 +344,161 @@ function renderSection(section) {
     };
 
     main.innerHTML = templates[section] || "<h2>Invalid Section</h2>";
+}
+
+
+
+
+async function getAllEmployees() {
+    let response = await fetch("http://localhost:8181/allEmployees");
+    console.log(response);
+    let result = await response.json();
+    let tableBody = document.getElementById("employeeTableBody");
+
+    if (!tableBody) return;
+
+    // Clear the table
+    tableBody.innerHTML = '';
+    
+    if (result.length === 0) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 6; // Updated for EID column
+        cell.textContent = "No employees found";
+        cell.style.textAlign = "center";
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
+    }
+
+    result.forEach((employee: { eid: number; name: string; age: number; salary: number; designation: string; department: string; }) => {
+        let row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${employee.eid}</td>
+            <td>${employee.name}</td>
+            <td>${employee.age}</td>
+            <td>${employee.salary}</td>
+            <td>${employee.designation}</td>
+            <td>${employee.department}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+async function addEmployee(event: Event) {
+    event.preventDefault();
+    
+    const nameInput = document.getElementById('name') as HTMLInputElement;
+    const ageInput = document.getElementById('age') as HTMLInputElement;
+    const salaryInput = document.getElementById('salary') as HTMLInputElement;
+    const designationInput = document.getElementById('designation') as HTMLSelectElement;
+    const departmentInput = document.getElementById('department') as HTMLInputElement;
+    const msgElement = document.getElementById('msg');
+    
+    const name = nameInput.value.trim();
+    const age = parseInt(ageInput.value);
+    const salary = parseInt(salaryInput.value);
+    const designation = designationInput.value.trim();
+    const department = departmentInput.value.trim();
+    
+    // Validation
+    if (!name || !age || !salary || !designation || !department) {
+        if (msgElement) msgElement.textContent = "All fields are required!";
+        return;
+    }
+    
+    if (name.split(' ').length < 2 || !(/^[A-Z]/.test(name))) {
+        if (msgElement) msgElement.textContent = "Name must start with a capital letter and contain at least two words";
+        return;
+    }
+    
+    if (age < 20 || age > 60) {
+        if (msgElement) msgElement.textContent = "Age must be between 20 and 60";
+        return;
+    }
+    
+    // Create the employee
+    try {
+        let result = await fetch("http://localhost:8181/saveEmployee", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name, age, salary, designation, department })
+        });
+        
+        if (result.ok) {
+            if (msgElement) msgElement.textContent = "Employee added successfully!";
+        } else {
+            if (msgElement) msgElement.textContent = "Error adding employee: " + result.statusText;
+        }
+        
+        // Reset form and show success message
+        (document.getElementById('addEmpForm') as HTMLFormElement).reset();
+        
+        // Update employee count
+        updateEmployeeCount();
+        
+        // Refresh the table if we're on the display section
+    } catch (error) {
+        if (msgElement) msgElement.textContent = "Error adding employee: " + error;
+    }
+}
+
+async function deleteEmployee(event: Event): void {
+    event.preventDefault();
+    
+    const idInput = document.getElementById('removeId') as HTMLInputElement;
+    const msgElement = document.getElementById('removeMsg');
+
+    try {
+        let result = await fetch(`http://localhost:8181/deleteEmployee/${idInput.value}`, {
+            method: "DELETE"
+        });
+        if (result.ok) {
+            if (msgElement) msgElement.textContent = "Employee Deleted successfully!";
+        } else {
+            if (msgElement) msgElement.textContent = "Error deleting employee: " + result.statusText;
+        }
+        // Reset form and show success message
+        (document.getElementById('addEmpForm') as HTMLFormElement).reset();
+        
+        // Update employee count
+        updateEmployeeCount();
+    }
+    catch (error) {
+        if (msgElement) msgElement.textContent = "Error deleting employee: " + error;
+    }
+}
+
+async function updateEmployeeSalary(event: Event): void {
+    event.preventDefault();
+    
+    const idInput = document.getElementById('updateId') as HTMLInputElement;
+    const salaryInput = document.getElementById('updateSalary') as HTMLInputElement;
+    const msgElement = document.getElementById('updateMsg');
+    
+    const id = parseInt(idInput.value);
+    const salary = parseFloat(salaryInput.value);
+
+    try {
+        let result = await fetch(`http://localhost:8181/updateSalary?eid=${id}&salary=${salary}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (result.ok) {
+            if (msgElement) msgElement.textContent = "Employee salary updated successfully!";
+        } else {
+            if (msgElement) msgElement.textContent = "Error updating employee salary: " + result.statusText;
+        }
+        // Reset form and show success message
+        (document.getElementById('updateEmployeeForm') as HTMLFormElement).reset();
+        
+        // Update employee count
+        updateEmployeeCount();
+    } catch (error) {
+        if (msgElement) msgElement.textContent = "Error updating employee salary: " + error;
+    }        
 }
