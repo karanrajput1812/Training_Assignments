@@ -48,4 +48,7 @@ public class EmployeeServices {
 		return emp.findByDepartment(department);
 	}
 	
+	public long getCount() {
+		return emp.count();
+	}
 }

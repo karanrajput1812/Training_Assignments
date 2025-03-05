@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,10 +37,9 @@ public class EmployeeController {
 	public String deleteEmployee(@PathVariable int eid) {
 		return empService.deleteEmployee(eid);
 	}
-	@PutMapping("/updateSalary")
+	@PatchMapping("/updateSalary")
 	public String updateSalary(@RequestParam int eid, @RequestParam float salary) {
 		return empService.updateSalary(eid, salary);
-	}
 	}
 	
 	@GetMapping("/getById/{eid}")
@@ -60,5 +60,10 @@ public class EmployeeController {
 	@GetMapping("/getByDepartment/{department}")
 	public List<Employee> getByDepartment(@PathVariable String department){
 		return empService.getByDepartment(department);
+	}
+	
+	@GetMapping("/employeeCount")
+	public long getCount() {
+		return empService.getCount();
 	}
 } 
