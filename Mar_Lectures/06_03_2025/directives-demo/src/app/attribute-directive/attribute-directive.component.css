@@ -1,0 +1,13 @@
+div {
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+}
+
+.brdr {
+    border: crimson 20px solid;
+}
+
+.bg {
+    background-color: aquamarine;
+}

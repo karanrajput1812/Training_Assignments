@@ -28,9 +28,8 @@ public class EmployeeServices {
 		emp.deleteById(eid);
 		return "Employee Deleted Succesfully";
 	}
-	public String updateSalary(int eid, float salary) {
-		emp.updateSalary(eid, salary);
-		return "Employee doesn't exist";
+	public Employee updateSalary(int eid, float salary) {
+		return emp.updateSalary(eid, salary);
 	}
 	public Optional<Employee> getById(int eid) {
 		return emp.findById(eid);

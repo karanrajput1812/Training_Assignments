@@ -1,0 +1,16 @@
+<h2>Attributs Directives Demo</h2>
+<h3>
+    <div class="brdr bg">
+        JUST FOR DEMO PURPOSE  CREATED THIS DIV BLOCK
+    </div>
+    <div class="bg" [ngClass]="{brdr:brderColor, bg:bgColor}">
+        JUST FOR DEMO PURPOSE  CREATED THIS DIV BLOCK
+    </div>
+    <button (click)="toggleBorderColor()">BORDER</button>
+    <button (click)="toggleBgColor()">BACKFROUND</button>
+</h3>
+<h3>
+    <div [ngStyle]="{'background-color': color}">Just For Demo</div>
+    <input type="text" #inputcolor>
+    <button (click)="setColor(inputcolor.value)">CHANGE COLOR</button>
+</h3>

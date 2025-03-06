@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,10 +37,9 @@ public class EmployeeController {
 		return empService.deleteEmployee(eid);
 	}
 	@PatchMapping("/updateSalary")
-	public String updateSalary(@RequestParam int eid, @RequestParam float salary) {
+	public Employee updateSalary(@RequestParam int eid, @RequestParam float salary) {
 		return empService.updateSalary(eid, salary);
 	}
-	
 	@GetMapping("/getById/{eid}")
 	public Optional<Employee> getById(@PathVariable int eid){
 		return empService.getById(eid);

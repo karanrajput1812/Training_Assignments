@@ -1,0 +1,24 @@
+Enter the Radius: 
+<input type="number" #r (change)="setRadius(+r.value)">
+<circle [radius]=radius></circle>
+
+<hr>
+
+<h1>
+  Currency Converter
+</h1>
+
+
+Enter Currency in Rs. <input type="number" #curr (change)="setCurrency(+curr.value)">
+<h3>
+  {{ currency | money }}   <br>
+  Rs. {{currency}} is euqal to {{ currency  | money : 'USD' }}   <br>
+  Rs. {{currency}} is euqal to {{ currency | money : 'AUD' }}   <br>
+  Rs. {{currency}} is euqal to {{ currency | money : 'JPY' }}   <br>
+  Rs. {{currency}} is euqal to {{ currency  | money : 'EUR' }}   <br>
+  Rs. {{currency}} is euqal to {{ currency  | money : 'SAR' }}   <br>
+
+</h3>
+
+<hr>
+<app-calculator></app-calculator>

@@ -1,0 +1,20 @@
+<input type="radio" name="calculator" value="Loan" #myLoan (change)="changeCalculator(myLoan.value)"> Loan Calculator
+<input type="radio" name="calculator" value="Deposit" #myDeposit (change)="changeCalculator(myDeposit.value)"> Deposit Calculator
+<input type="radio" name="calculator" value="MutualFund" #myMutualFund (change)="changeCalculator(myMutualFund.value)"> Mutual Fund Calculator
+
+<div>
+    <div [ngSwitch]="type">
+        <h3 *ngSwitchCase="myLoan.value">
+            Loan Calculator
+        </h3>
+        <h3 *ngSwitchCase="myDeposit.value">Deposit Calculator</h3>
+        <h3 *ngSwitchCase="myMutualFund.value">
+            Enter Monthly SIP : <input type="string" #sip> <br>
+            Enter Duration : <input type="string" #duration> <br>
+            Enter ROI: <input type="string" #roi> <br>
+            <button (click)="calculate(sip.value,duration.value, roi.value)">Calculate Returns</button>
+            <h4 *ngIf=return>{{return}}</h4>
+        </h3>
+        <h3 *ngSwitchDefault="">:)</h3>
+    </div>
+</div>

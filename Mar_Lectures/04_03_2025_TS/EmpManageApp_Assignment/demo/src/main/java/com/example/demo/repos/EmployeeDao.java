@@ -10,7 +10,7 @@ import com.example.demo.models.Employee;
 public interface EmployeeDao extends JpaRepository<Employee, Integer>{
 	
 	@Query("UPDATE Employee e SET e.salary = ?2 WHERE e.eid = ?1")
-    public int updateSalary(int eid, float salary);
+    public Employee updateSalary(int eid, float salary);
 
 	public List<Employee> findByName(String name);
 
