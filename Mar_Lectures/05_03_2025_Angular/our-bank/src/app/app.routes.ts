@@ -4,6 +4,7 @@ import { HomeComponent } from './component/home/home.component';
 import { AboutUsComponent } from './component/about-us/about-us.component';
 import { ServicesComponent } from './component/services/services.component';
 import { NetbankingComponent } from './component/netbanking/netbanking.component';
+import { RegisterComponent } from './component/register/register.component';
 import { ContactUsComponent } from './component/contact-us/contact-us.component';
 import { CalculatorsComponent } from './component/services/calculators/calculators.component';
 import { LoanCalculatorComponent } from './component/services/calculators/loan-calculator/loan-calculator.component';
@@ -14,6 +15,7 @@ export const routes: Routes = [
     { path: 'about-us', component: AboutUsComponent },
     { path: 'services', component: ServicesComponent },
     { path: 'net-banking', component: NetbankingComponent },
+    { path: 'register', component: RegisterComponent},
     { path: 'contact-us', component: ContactUsComponent },
     { path: 'services/calculator', component: CalculatorsComponent },
     { path: 'services/calculator/loan-calculator', component: LoanCalculatorComponent},

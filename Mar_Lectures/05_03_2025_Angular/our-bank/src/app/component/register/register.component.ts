@@ -3,11 +3,11 @@ import { NavigationComponent } from "../navigation/navigation.component";
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-netbanking',
+  selector: 'app-register',
   imports: [NavigationComponent, RouterLink],
-  templateUrl: './netbanking.component.html',
-  styleUrl: './netbanking.component.css'
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css'
 })
-export class NetbankingComponent {
+export class RegisterComponent {
 
 }

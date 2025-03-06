@@ -1,0 +1,30 @@
+<h2>Inbuilt Pipes</h2>
+<hr>
+<h3>
+    {{ str}} <br>
+    {{ str | uppercase}} <br>
+    {{ str | lowercase}} <br>
+    {{ str | slice : 5}} <br>
+    {{ str | slice : 5: 11}} <br>
+    ---------------------------------------------------------------------------------------
+    <br>
+
+    {{amt}} <br>
+    {{amt | currency}} <br>
+    {{amt | currency : "INR"}} <br>
+    {{amt | currency : "EUR"}} <br>
+    {{amt | currency : "JPY"}} <br>
+    {{amt | currency : "SAR"}} <br>
+    ---------------------------------------------------------------------------------------
+    <br>
+    {{dt}} <br>
+    {{dt | date: "fullDate"}} <br>
+    {{dt | date: "long"}} <br>
+    {{dt | date: "dd/MM/yyyy"}} <br>
+    {{dt | date: "dd/MM/yyyy hh:mm:ss"}} <br>
+
+    <br>
+
+    {{dt | date: "fullDate" | uppercase | slice : 9 : 15}} <br>
+</h3>
+<hr>

@@ -32,4 +32,6 @@ export class LoanCalculatorComponent {
     const numberOfMonths = this.tenure * 12;
     this.emi = (this.amount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfMonths)) / (Math.pow(1 + monthlyInterestRate, numberOfMonths) - 1);
   }
+
+  
 }
