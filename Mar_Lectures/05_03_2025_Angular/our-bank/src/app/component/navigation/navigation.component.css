@@ -3,6 +3,7 @@
     color: #ffffff;
     padding: 2rem;
     width: 250px;
+    height: 100%;
 }
 
 .aside h3 {
@@ -42,15 +43,7 @@
 }
 
 @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
     .aside {
         width: 100%;
-    }
-
-    .contact-container {
-        grid-template-columns: 1fr;
     }
 }

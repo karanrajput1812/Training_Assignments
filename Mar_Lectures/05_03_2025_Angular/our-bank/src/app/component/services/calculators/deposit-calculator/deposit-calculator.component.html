@@ -1,0 +1,34 @@
+<div class="container">
+    <app-navigation></app-navigation>
+    <section class="main" id="deposit_calculator">
+        <h2>Deposit Calculator</h2>
+        <br>
+        <a class="submit-btn" routerLink="/services/calculator/loan-calculator">
+            👉🏻 Click Here For Loan Calculator
+        </a>
+        <br>
+        <br>
+        <div class="contact-form">
+        <h3>Enter the below details</h3>
+        <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="amount">Principal Amount</label>
+                <input type="number" id="amount" placeholder="Enter Principal Amount" required [(ngModel)]="amount" name="amount">
+            </div>
+            <div class="form-group">
+                <label for="tenure">Tenure</label>
+                <input type="number" id="tenure" placeholder="Enter Tenure" required [(ngModel)]="tenure" name="tenure">
+            </div>
+            <div class="form-group">
+                <label for="interest">Interest</label>
+                <input type="number" id="interest" placeholder="Enter Interest" readonly [(ngModel)]="interest" name="interest">
+            </div>
+            <button type="submit" class="submit-btn">Calculate Maturity</button>
+            <br>
+            <br>
+            <h1 class="maturity">{{maturity}}</h1>
+            <br>
+            </form>
+        </div>
+    </section>
+</div>
