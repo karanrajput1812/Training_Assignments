@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { DepositCalculatorComponent } from "./deposit-calculator/deposit-calculator.component";
+import { LoanCalculatorComponent } from './loan-calculator/loan-calculator.component';
+import { MutualFundCalculatorComponent } from './mutual-fund-calculator/mutual-fund-calculator.component';
 
 @Component({
   selector: 'app-calculator',
-  imports: [CommonModule],
+  imports: [CommonModule, DepositCalculatorComponent, LoanCalculatorComponent, MutualFundCalculatorComponent],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.css'
 })
@@ -12,14 +15,5 @@ export class CalculatorComponent {
   changeCalculator(calType: string): void {
     this.type = calType;
     console.log(calType);
-  }
-  return: number = 0;
-
-  calculate(sip: string, duration: string, roi: string): void {
-    console.log(sip);
-    const monthlyRate = parseInt(roi) / 12 / 100;
-    const months = parseInt(duration) * 12;
-    this.return = parseInt(sip) * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate);
-    console.log(this.return);
   }
 }

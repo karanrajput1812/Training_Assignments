@@ -1,0 +1,26 @@
+  <section class="main" id="deposit_calculator">
+    <h2>Mutual Fund Calculator</h2>
+    <br />
+    <br />
+    <div class="contact-form">
+      <h3>Enter the below details</h3>
+        <div class="form-group">
+          <label for="amount">Monthly SIP </label>
+          <input type="text" placeholder="Enter Monthly SIP" required #sip/>
+        </div>
+        <div class="form-group">
+          <label for="tenure">Duration(in yrs) </label>
+          <input type="text" placeholder="Enter Duration(in yrs) : " required  #duration/>
+        </div>
+        <div class="form-group">
+          <label for="interest">ROI </label>
+          <input type="text" id="interest" placeholder="Enter ROI:" name="interest" #roi/>
+        </div>
+        <button class="submit-btn" (click)="calculate(sip.value, duration.value, roi.value)">Calculate Returns</button>
+        <br />
+        <br />
+        <h1 class="maturity" *ngIf="return > 0" >Return : {{ return }}</h1>
+        <a class="maturity">{{ error }}</a>
+        <br />
+    </div>
+  </section>

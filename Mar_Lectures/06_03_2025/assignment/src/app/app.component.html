@@ -1,24 +1,28 @@
-Enter the Radius: 
-<input type="number" #r (change)="setRadius(+r.value)">
-<circle [radius]=radius></circle>
+<div class="container">
+  <div class="currency-converter">
+    <h1>Circle Calculations</h1>
+    <label for="currency">Enter the Radius:</label>
+    <input type="number" #r (change)="setRadius(+r.value)" />
+    <circle [radius]="radius"></circle>
+  </div>
+  
+  <div class="currency-converter">
+    <h1>Currency Converter</h1>
+  
+    <label for="currency">Enter Currency in Rs.</label>
+    <input type="number" id="currency" #curr (change)="setCurrency(+curr.value)" />
+  
+    <div class="conversion-results">
+      <p>Rs. {{ currency }} = {{ currency | money : "USD" }} USD</p>
+      <p>Rs. {{ currency }} = {{ currency | money : "AUD" }} AUD</p>
+      <p>Rs. {{ currency }} = {{ currency | money : "JPY" }} JPY</p>
+      <p>Rs. {{ currency }} = {{ currency | money : "EUR" }} EUR</p>
+      <p>Rs. {{ currency }} = {{ currency | money : "SAR" }} SAR</p>
+    </div>
+  </div>
+</div>
 
-<hr>
-
-<h1>
-  Currency Converter
-</h1>
 
 
-Enter Currency in Rs. <input type="number" #curr (change)="setCurrency(+curr.value)">
-<h3>
-  {{ currency | money }}   <br>
-  Rs. {{currency}} is euqal to {{ currency  | money : 'USD' }}   <br>
-  Rs. {{currency}} is euqal to {{ currency | money : 'AUD' }}   <br>
-  Rs. {{currency}} is euqal to {{ currency | money : 'JPY' }}   <br>
-  Rs. {{currency}} is euqal to {{ currency  | money : 'EUR' }}   <br>
-  Rs. {{currency}} is euqal to {{ currency  | money : 'SAR' }}   <br>
-
-</h3>
-
-<hr>
+<hr />
 <app-calculator></app-calculator>

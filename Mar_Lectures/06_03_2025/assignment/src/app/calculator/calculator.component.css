@@ -1,0 +1,69 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4ff;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 2rem auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar Styling */
+.aside {
+    background-color: #004d99;
+    color: #ffffff;
+    padding: 2rem;
+    width: 250px;
+}
+
+.aside ul {
+    list-style-type: none;
+}
+
+.aside ul li {
+    margin-bottom: 1rem;
+}
+
+.aside ul li input {
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+/* Main Content Styling */
+.main {
+    flex: 1;
+    padding: 2rem;
+    background-color: #f9f9f9;
+}
+
+.contact-form {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .aside {
+        width: 100%;
+        text-align: center;
+    }
+}

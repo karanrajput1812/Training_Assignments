@@ -21,7 +21,7 @@ export class MoneyPipe implements PipeTransform {
     else if(args[0]=='AUD') {
       return "AU$ " + value/55;
     }
-    return "Rs.. " + value;
+    return "Rs. " + value;
   }
 
 }

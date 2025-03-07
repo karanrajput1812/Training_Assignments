@@ -1,0 +1,27 @@
+
+    <section class="main" id="deposit_calculator">
+        <h2>Deposit Calculator</h2>
+        <br>
+        <br>
+        <div class="contact-form">
+        <h3>Enter the below details</h3>
+            <div class="form-group">
+                <label for="amount">Principal Amount</label>
+                <input type="number" placeholder="Enter Principal Amount" required #amount>
+            </div>
+            <div class="form-group">
+                <label for="tenure">Tenure</label>
+                <input type="number" placeholder="Enter Tenure" required #tenure>
+            </div>
+            <div class="form-group">
+                <label for="interest">Interest</label>
+                <input type="number" placeholder="Enter Interest" value=7 readonly #interest>
+            </div>
+            <button class="submit-btn" (click)="calculate(amount.value, tenure.value, interest.value)">Calculate Maturity</button>
+            <br>
+            <br>
+            <h1 class="maturity" *ngIf="return > 0">{{return}}</h1>
+            <a>{{error}}</a>
+            <br>
+        </div>
+    </section>

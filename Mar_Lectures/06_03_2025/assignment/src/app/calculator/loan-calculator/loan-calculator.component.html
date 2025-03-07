@@ -1,0 +1,36 @@
+    <section class="main" id="loan_calculator">
+        <h2>Loan Calculator</h2>
+        <br>
+        <div class="contact-form">
+        <h3>Enter the below details</h3>
+            <div class="form-group">
+            <label for="name">Applicant</label>
+            <input type="text" id="name" name="name" placeholder="Enter applicant name" required>
+            </div>
+            <div class="form-group">
+            <label for="type">Type</label>
+            <select id="type" name="type" (change)="updatedInterest()" required #type>
+                <option value="">Select a type</option>
+                <option value="home">Home</option>
+                <option value="car">Car</option>
+                <option value="personal">Personal</option>
+            </select>
+            </div>
+            <div class="form-group">
+            <label for="interest">Interest</label>
+            <input type="number" id="interest" name="interest" placeholder="Enter Interest" required #interest>
+            </div>
+            <div class="form-group">
+            <label for="tenure">Tenure</label>
+            <input type="number" id="tenure" name="tenure" placeholder="Enter Tenure"  required #tenure>
+            </div>
+            <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" name="amount" placeholder="Enter Amount" #amount>
+            </div>
+            <button class="submit-btn" (click)="calculate(amount.value, tenure.value, interest.value)">Calculate EMI</button>
+            <br>
+            <h1 class="emi" *ngIf="emi > 0">{{emi}}</h1>
+            <a>{{error}}</a>
+        </div>
+    </section>
