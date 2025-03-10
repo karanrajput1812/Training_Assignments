@@ -1,9 +1,19 @@
-<h2>Login Forms</h2>
-<form [formGroup]="employeeForm" (ngSubmit) = "abc(employeeForm.value)">
-    <h3>
-        Customer ID : <input type="number" name="cid" formControlName="cid"> <br>
-        Password : <input type="password" name="password" formControlName="password"> <br>
-        <br>
-        <input type="submit" value="SUBMIT">
-    </h3>
-</form>
+<section class="main" id="login_form">
+    <h2>Login Forms</h2>
+    <br>
+    <div class="contact-form">
+        <h3>Enter your login details</h3>
+        <form [formGroup]="employeeForm" (ngSubmit)="abc(employeeForm.value)">
+            <div class="form-group">
+                <label for="cid">Customer ID</label>
+                <input type="number" id="cid" name="cid" formControlName="cid" placeholder="Enter Customer ID" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" formControlName="password" placeholder="Enter Password" required>
+            </div>
+            <button class="submit-btn" type="submit">SUBMIT</button>
+        </form>
+        <h3 class="msg">{{cs.msg}}</h3>
+    </div>
+</section>

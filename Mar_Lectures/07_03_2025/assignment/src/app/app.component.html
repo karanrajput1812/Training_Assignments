@@ -1,4 +1,21 @@
-<hr>
-<div *ngIf="cs.user_session"><app-home></app-home></div>
-<div *ngIf="cs.login_register"><app-register></app-register></div>
-<div *ngIf="!cs.login_register && !cs.user_session"><app-login></app-login></div>
+<div class="container" *ngIf="!cs.user_session">
+    <aside class="aside">
+        <ul>
+            <li><input type="radio" name="calculator" value="login" #myLoan (change)="changeForm()"> Login</li>
+            <li><input type="radio" name="calculator" value="register" #myDeposit (change)="changeForm()"> Register</li>
+        </ul>
+</aside>
+<div class="main">
+    <div [ngSwitch]="cs.login_register" class="contact-form">
+        <h3 *ngSwitchCase=false>
+          <app-register></app-register>
+        </h3>
+        <h3 *ngSwitchDefault="">
+            <app-login></app-login>
+        </h3>
+    </div>
+</div>
+</div>
+<div class="container" *ngIf="cs.user_session">
+  <app-home></app-home>
+</div>

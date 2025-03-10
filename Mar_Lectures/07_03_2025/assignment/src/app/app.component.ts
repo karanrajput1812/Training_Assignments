@@ -27,4 +27,7 @@ export class AppComponent {
   constructor(public cs: SessionService) {
 
   }
+  changeForm(): void {
+    this.cs.login_register = !this.cs.login_register;
+  }
 }

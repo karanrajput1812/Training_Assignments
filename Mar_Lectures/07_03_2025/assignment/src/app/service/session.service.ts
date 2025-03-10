@@ -8,6 +8,9 @@ export class SessionService {
 
   user_session: boolean = false;
   login_register: boolean = true;
+  msg : string = "";
+  userinfo : any = "";
+
 
   constructor() {
     console.log("Session object created......");
@@ -17,7 +20,9 @@ export class SessionService {
 
   addUser(obj: { cid: number,username: string, password: string , accountNo: number}) {
     this.user.push(obj);
-    this.login_register = false;
+
+    // this.login_register = false;
+
     console.log(this.user);
   }
 
@@ -26,9 +31,12 @@ export class SessionService {
       if (this.user[i].username == obj.username && this.user[i].password == obj.password) {
         this.user_session = true;
         this.login_register = false;
+        this.userinfo = this.user[i];
         return true;
       }
     }
+    this.msg = "Invalid username or password";
+    console.log(this.msg);
     return false;
   }
 

@@ -1,12 +1,104 @@
-<h2>Register Forms</h2>
-<form [formGroup]="employeeForm" (ngSubmit) = "abc(employeeForm.value)">
-    <h3>
-        Customer ID : <input type="number" name="cid" formControlName="cid"> <br>
-        Username : <input type="text" name="uname" formControlName="uname"> <br>
-        Password : <input type="password" name="password" formControlName="password"> <br>
-        Confirm Password : <input type="password" name="cpassword" formControlName="cpassword"> <br>
-        Account No : <input type="text" name="accountNo" formControlName="accountNo"> <br>
-        <br>
-        <input type="submit" value="SUBMIT" [disabled]="employeeForm.invalid">
-    </h3>
-</form>
+<section class="main" id="register_form">
+    <h2>Register Form</h2>
+    <br />
+    <div class="contact-form">
+      <h3>Enter the below details</h3>
+  
+      <form [formGroup]="employeeForm" (ngSubmit)="abc(employeeForm.value)">
+        <!-- Customer ID -->
+        <div class="form-group">
+          <label for="cid">Customer ID</label>
+          <input
+            type="number"
+            id="cid"
+            name="cid"
+            formControlName="cid"
+            placeholder="Enter 7-digit Customer ID"
+            required
+          />
+          <small class="error-msg" *ngIf="employeeForm.get('cid')?.touched && employeeForm.get('cid')?.invalid">
+            <span *ngIf="employeeForm.get('cid')?.errors?.['required']">Customer ID is required.</span>
+            <span *ngIf="employeeForm.get('cid')?.errors?.['pattern']">Customer ID must be exactly 7 digits.</span>
+          </small>
+        </div>
+  
+        <!-- Username -->
+        <div class="form-group">
+          <label for="uname">Username</label>
+          <input
+            type="text"
+            id="uname"
+            name="uname"
+            formControlName="uname"
+            placeholder="Enter Username"
+            required
+          />
+          <small class="error-msg" *ngIf="employeeForm.get('uname')?.touched && employeeForm.get('uname')?.invalid">
+            <span *ngIf="employeeForm.get('uname')?.errors?.['required']">Username is required.</span>
+            <span *ngIf="employeeForm.get('uname')?.errors?.['minlength']">Minimum 5 characters required.</span>
+            <span *ngIf="employeeForm.get('uname')?.errors?.['hasDigit']">Username must not contain digits.</span>
+          </small>
+        </div>
+  
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            formControlName="password"
+            placeholder="Enter Password"
+            required
+          />
+          <small class="error-msg" *ngIf="employeeForm.get('password')?.touched && employeeForm.get('password')?.invalid">
+            <span *ngIf="employeeForm.get('password')?.errors?.['required']">Password is required.</span>
+            <span *ngIf="employeeForm.get('password')?.errors?.['pattern']">
+              Must be at least 8 characters with 1 uppercase, 1 lowercase & 1 special character.
+            </span>
+          </small>
+        </div>
+  
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="cpassword">Confirm Password</label>
+          <input
+            type="password"
+            id="cpassword"
+            name="cpassword"
+            formControlName="cpassword"
+            placeholder="Confirm Password"
+            required
+          />
+          <small class="error-msg" *ngIf="employeeForm.get('cpassword')?.touched && employeeForm.get('cpassword')?.invalid">
+            <span *ngIf="employeeForm.get('cpassword')?.errors?.['required']">Confirm password is required.</span>
+          </small>
+          <small class="error-msg" *ngIf="employeeForm.errors?.['passwordMismatch'] && employeeForm.get('cpassword')?.touched">
+            Passwords do not match.
+          </small>
+        </div>
+  
+        <!-- Account No -->
+        <div class="form-group">
+          <label for="accountNo">Account Number</label>
+          <input
+            type="text"
+            id="accountNo"
+            name="accountNo"
+            formControlName="accountNo"
+            placeholder="Enter Account Number"
+            required
+          />
+          <small class="error-msg" *ngIf="employeeForm.get('accountNo')?.touched && employeeForm.get('accountNo')?.invalid">
+            <span *ngIf="employeeForm.get('accountNo')?.errors?.['required']">Account number is required.</span>
+            <span *ngIf="employeeForm.get('accountNo')?.errors?.['minlength']">Minimum 6 digits required.</span>
+            <span *ngIf="employeeForm.get('accountNo')?.errors?.['pattern']">Account number must contain digits only.</span>
+          </small>
+        </div>
+  
+        <!-- Submit -->
+        <button class="submit-btn" type="submit" [disabled]="employeeForm.invalid">SUBMIT</button>
+      </form>
+    </div>
+  </section>
+  
