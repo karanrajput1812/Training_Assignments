@@ -1,0 +1,12 @@
+<h2>Template Driven Form</h2>
+<form #empForm="ngForm" (ngSubmit)="abc(empForm.value)">
+    <h3>
+        Enter name : <input type="text" name="uname" ngModel required> <br>
+        Enter age : <input type="number" name="age" ngModel required> <br>
+        Enter salary : <input type="number" name="salary" ngModel required> <br>
+        Enter designation : <input type="text" name="designation" ngModel required> <br>
+        <br>
+        <input type="submit" value="SUBMIT">
+        <input type="reset" name="RESET">
+    </h3>
+</form>

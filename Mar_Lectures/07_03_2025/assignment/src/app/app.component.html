@@ -1,0 +1,4 @@
+<hr>
+<div *ngIf="cs.user_session"><app-home></app-home></div>
+<div *ngIf="cs.login_register"><app-register></app-register></div>
+<div *ngIf="!cs.login_register && !cs.user_session"><app-login></app-login></div>

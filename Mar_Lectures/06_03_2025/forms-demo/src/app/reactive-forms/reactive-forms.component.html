@@ -1,0 +1,12 @@
+    <h2>Reactive Forms</h2>
+    <form [formGroup]="employeeForm" (ngSubmit) = "abc(employeeForm.value)">
+        <h3>
+            Enter name : <input type="text" name="uname" formControlName="user"> <br>
+            Enter age : <input type="number" name="age" formControlName="age"> <br>
+            Enter salary : <input type="number" name="salary" formControlName="salary"> <br>
+            Enter designation : <input type="text" name="designation" formControlName="designation"> <br>
+            <br>
+            <input type="submit" value="SUBMIT" [disabled]="employeeForm.invalid">
+            <input type="reset" name="RESET">
+        </h3>
+    </form>

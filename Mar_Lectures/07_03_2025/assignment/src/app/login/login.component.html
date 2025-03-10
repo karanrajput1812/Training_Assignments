@@ -1,0 +1,9 @@
+<h2>Login Forms</h2>
+<form [formGroup]="employeeForm" (ngSubmit) = "abc(employeeForm.value)">
+    <h3>
+        Customer ID : <input type="number" name="cid" formControlName="cid"> <br>
+        Password : <input type="password" name="password" formControlName="password"> <br>
+        <br>
+        <input type="submit" value="SUBMIT">
+    </h3>
+</form>

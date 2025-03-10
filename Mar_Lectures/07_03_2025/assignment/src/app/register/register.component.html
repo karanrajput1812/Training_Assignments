@@ -1,0 +1,12 @@
+<h2>Register Forms</h2>
+<form [formGroup]="employeeForm" (ngSubmit) = "abc(employeeForm.value)">
+    <h3>
+        Customer ID : <input type="number" name="cid" formControlName="cid"> <br>
+        Username : <input type="text" name="uname" formControlName="uname"> <br>
+        Password : <input type="password" name="password" formControlName="password"> <br>
+        Confirm Password : <input type="password" name="cpassword" formControlName="cpassword"> <br>
+        Account No : <input type="text" name="accountNo" formControlName="accountNo"> <br>
+        <br>
+        <input type="submit" value="SUBMIT" [disabled]="employeeForm.invalid">
+    </h3>
+</form>
