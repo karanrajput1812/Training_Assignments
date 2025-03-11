@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(6),
         Validators.pattern(/^\d+$/)
       ])
-    }); // Attach custom group-level validator
+    }),{ validators: this.passwordMatchValidator() }; // Attach custom group-level validator
   }
 
   noDigitValidator(): ValidatorFn {
@@ -46,13 +46,13 @@ export class RegisterComponent implements OnInit {
     };
   }
 
-  // passwordMatchValidator(): ValidatorFn {
-  //   return (group: AbstractControl): ValidationErrors | null => {
-  //     const password = group.get('password')?.value;
-  //     const cpassword = group.get('cpassword')?.value;
-  //     return password === cpassword ? null : { passwordMismatch: true };
-  //   };
-  // }
+  passwordMatchValidator(): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const password = group.get('password')?.value;
+      const cpassword = group.get('cpassword')?.value;
+      return password === cpassword ? null : { passwordMismatch: true };
+    };
+  }
 
   abc(obj: any) {
     if (this.employeeForm.valid) {
