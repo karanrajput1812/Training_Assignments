@@ -112,3 +112,13 @@ p {
     color: red;
     font-size: 0.9rem;
 }
+
+
+h1 {
+    color: red;
+    text-align: center;
+}
+h2 {
+    color: blue;
+    text-align: center;
+}

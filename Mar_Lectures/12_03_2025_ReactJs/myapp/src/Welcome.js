@@ -13,7 +13,6 @@ function Welcome() {
     }
   return (
     <>
-        <hr></hr>
         <h2>Welcome ! {name}</h2>
         <h3>
             <input ref={refElement} type="text" value={name} onChange={(e)=> setName(e.target.value)}></input>

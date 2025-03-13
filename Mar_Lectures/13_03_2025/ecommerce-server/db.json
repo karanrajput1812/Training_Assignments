@@ -1,0 +1,43 @@
+{
+  "products": [
+    {
+      "id": "2",
+      "title": "sdsd1",
+      "price": "10000",
+      "description": "sdsds",
+      "category": "dssdd",
+      "rating": 5,
+      "v_id": "1"
+    },
+    {
+      "id": "415a",
+      "pid": "2",
+      "title": "dsd",
+      "price": "2233",
+      "description": "dsdsd",
+      "category": "sdswe",
+      "rating": 5,
+      "v_id": "3"
+    },
+    {
+      "id": "3",
+      "title": "Lenovo Ideapad",
+      "price": "30222",
+      "description": "i5 13th Gen",
+      "category": "Electronics",
+      "rating": 5,
+      "v_id": "3"
+    }
+  ],
+  "vendors": [
+    {
+      "id":3,
+      "name":"Aayush",
+      "age":34,
+      "registration_no": 122333,
+      "address": "Times Square Andheri",
+      "phone_no": "93233 32323",
+      "email": "adsd@gmail.com"
+    }
+  ]
+}
