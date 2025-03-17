@@ -1,43 +1,140 @@
 {
   "products": [
     {
-      "id": "2",
-      "title": "sdsd1",
-      "price": "10000",
-      "description": "sdsds",
-      "category": "dssdd",
+      "id": "1",
+      "title": "Acer Nitro 5",
+      "price": "70000",
+      "description": "i5 12th Gen",
+      "category": "Electronics",
       "rating": 5,
       "v_id": "1"
     },
     {
-      "id": "415a",
-      "pid": "2",
-      "title": "dsd",
-      "price": "2233",
-      "description": "dsdsd",
-      "category": "sdswe",
+      "id": "2",
+      "title": "Samsung Galaxy S21",
+      "price": "50000",
+      "description": "8GB RAM, 128GB Storage",
+      "category": "Electronics",
+      "rating": 4,
+      "v_id": "2"
+    },
+    {
+      "id": "3",
+      "title": "Nike Running Shoes",
+      "price": "4000",
+      "description": "Comfortable and durable",
+      "category": "Footwear",
       "rating": 5,
       "v_id": "3"
     },
     {
-      "id": "3",
-      "title": "Lenovo Ideapad",
-      "price": "30222",
-      "description": "i5 13th Gen",
-      "category": "Electronics",
-      "rating": 5,
-      "v_id": "3"
+      "id": "4",
+      "title": "Prestige Pressure Cooker",
+      "price": "2500",
+      "description": "5L capacity, stainless steel",
+      "category": "Kitchen",
+      "rating": 4,
+      "v_id": "1"
     }
   ],
   "vendors": [
     {
-      "id":3,
-      "name":"Aayush",
-      "age":34,
+      "id": "3",
+      "name": "Aayush",
+      "age": 34,
       "registration_no": 122333,
       "address": "Times Square Andheri",
       "phone_no": "93233 32323",
       "email": "adsd@gmail.com"
+    },
+    {
+      "id": "4",
+      "name": "Rohit Sharma",
+      "age": 29,
+      "registration_no": 122334,
+      "address": "MG Road, Pune",
+      "phone_no": "98765 43210",
+      "email": "rohit@gmail.com"
+    },
+    {
+      "id": "5",
+      "name": "Priya Singh",
+      "age": 27,
+      "registration_no": 122335,
+      "address": "Salt Lake, Kolkata",
+      "phone_no": "91234 56789",
+      "email": "priya@gmail.com"
+    },
+    {
+      "id": "6",
+      "name": "Vikram Patel",
+      "age": 40,
+      "registration_no": 122336,
+      "address": "Satellite, Ahmedabad",
+      "phone_no": "99887 66554",
+      "email": "vikram@gmail.com"
+    }
+  ],
+  "orders": [
+    {
+      "id": "1",
+      "product_id": "1",
+      "quantity": 2,
+      "total": 140000,
+      "v_id": "3",
+      "status": "Delivered",
+      "date": "20225-03-13"
+    },
+    {
+      "id": "2",
+      "product_id": "2",
+      "quantity": 1,
+      "total": 50000,
+      "v_id": "4",
+      "status": "Shipped",
+      "date": "2025-03-14"
+    },
+    {
+      "id": "3",
+      "product_id": "3",
+      "quantity": 3,
+      "total": 12000,
+      "v_id": "5",
+      "status": "Processing",
+      "date": "2025-03-15"
+    },
+    {
+      "id": "4",
+      "product_id": "4",
+      "quantity": 1,
+      "total": 2500,
+      "v_id": "6",
+      "status": "Delivered",
+      "date": "2025-03-16"
+    }
+  ], 
+  "stock": [
+    {
+      "id": "1",
+      "product_id": "1",
+      "quantity": 10,
+      "v_id": "3",
+      "date": "2025-03-13",
+      "status": "In Stock",
+      "cost price": 2000,
+      "discount": "10%",
+      "selling price": 2500
+    }
+  ],
+  "inventory": [
+    {
+      "id": "1",
+      "product_id":"1",
+      "quantity": 10,
+      "date": "2025-03-13",
+      "status": "In Stock",
+      "price": 2000,
+      "discount": "10%"
     }
   ]
 }

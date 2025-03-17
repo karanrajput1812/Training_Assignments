@@ -5,8 +5,7 @@ import './products.css'
 function Products() {
   return (
     <>
-        <GetProducts />
-        <br></br>
+        <GetProducts />        
         <AddProducts />
     </>
   )
