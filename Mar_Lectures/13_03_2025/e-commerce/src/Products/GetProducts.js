@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
+import Navbar from '../components/Navbar';
+
 
 function GetProducts() {
   const [products, setProducts] = useState([]);
@@ -47,6 +50,8 @@ function GetProducts() {
 
   return (
     <div className='products-form'>
+             <Navbar />
+
       <h1>All Products</h1>
       <table>
         <thead>
@@ -54,11 +59,11 @@ function GetProducts() {
             <th>Product ID</th>
             <th>Title</th>
             <th>Price</th>
+            <th>Vendor ID</th>
             <th>Description</th>
             <th>Category</th>
             <th>Rating</th>
             <th>Action</th>
-            {/* <th>Update</th> */}
           </tr>
         </thead>
         <tbody>
@@ -67,6 +72,7 @@ function GetProducts() {
               <td>{prod.id}</td>
               <td>{prod.title}</td>
               <td>{prod.price}</td>
+              <td><Link to={`/vendorDetails/${prod.v_id}`}>{prod.v_id}</Link></td>
               <td>{prod.description}</td>
               <td>{prod.category}</td>
               <td>{prod.rating}</td>
@@ -74,12 +80,13 @@ function GetProducts() {
               <button type="button" onClick={() => deleteProducts(prod.id)} className='delete-btn'>Delete</button>
               <button type="button" onClick={() => updateProducts(prod.id)} className='update-btn'>Update</button>
               </td>
-              {/* <td onClick={() => deleteProducts(prod.id)} className='delete-btn'>Delete</td>
-              <td onClick={() => updateProducts(prod.id)} className='update-btn'>Update</td> */}
             </tr>
           ))}
         </tbody>
       </table>
+      <br></br>
+      <br></br>
+      <Link to="./addProducts" className="submit-btn">Switch To Add Product</Link>
       {editingProduct && (
         <div className='update-form'>
           <h2>Update Product</h2>

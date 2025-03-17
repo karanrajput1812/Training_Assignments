@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
+import Navbar from '../components/Navbar';
+
 
 function GetVendors() {
   const [vendors, setVendors] = useState([]);
@@ -47,6 +50,7 @@ function GetVendors() {
 
   return (
     <div className='products-form'>
+      <Navbar />
       <h1>All Vendors</h1>
       <table>
         <thead>
@@ -79,6 +83,9 @@ function GetVendors() {
           ))}
         </tbody>
       </table>
+      <br></br>
+      <br></br>
+      <Link to="./addVendors" className="submit-btn">Switch To Add Vendor</Link>
       {editingVendor && (
         <div className='update-form'>
           <h2>Update Vendor</h2>

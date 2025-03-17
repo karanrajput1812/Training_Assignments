@@ -7,7 +7,7 @@
       "description": "i5 12th Gen",
       "category": "Electronics",
       "rating": 5,
-      "v_id": "1"
+      "v_id": "4"
     },
     {
       "id": "2",
@@ -16,7 +16,7 @@
       "description": "8GB RAM, 128GB Storage",
       "category": "Electronics",
       "rating": 4,
-      "v_id": "2"
+      "v_id": "5"
     },
     {
       "id": "3",
@@ -34,7 +34,7 @@
       "description": "5L capacity, stainless steel",
       "category": "Kitchen",
       "rating": 4,
-      "v_id": "1"
+      "v_id": "6"
     }
   ],
   "vendors": [
@@ -112,12 +112,12 @@
       "status": "Delivered",
       "date": "2025-03-16"
     }
-  ], 
+  ],
   "stock": [
     {
       "id": "1",
       "product_id": "1",
-      "quantity": 10,
+      "quantity": 7,
       "v_id": "3",
       "date": "2025-03-13",
       "status": "In Stock",
@@ -129,7 +129,7 @@
   "inventory": [
     {
       "id": "1",
-      "product_id":"1",
+      "product_id": "1",
       "quantity": 10,
       "date": "2025-03-13",
       "status": "In Stock",

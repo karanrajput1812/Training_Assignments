@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Navbar from '../components/Navbar';
+
 
 function AddOrders() {
     const [msg, setMsg] = useState('');
@@ -33,6 +35,7 @@ function AddOrders() {
 
     return (
         <div className="products-form">
+             <Navbar />
             <h1>Add Order</h1>
             <h3>Enter the details below to add an order</h3>
             <label htmlFor="id">Order ID</label>

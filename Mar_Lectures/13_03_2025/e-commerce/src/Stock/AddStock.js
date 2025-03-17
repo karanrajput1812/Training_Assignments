@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Navbar from '../components/Navbar';
+
 
 function AddStock() {
     const [msg, setMsg] = useState("");
@@ -32,7 +34,8 @@ function AddStock() {
     };
 
     return (
-        <div className='product-form'>
+        <div className='products-form'>
+             <Navbar />
             <h1>Add Stock</h1>
             <h3>Enter the below details to add stock to inventory</h3>
             <label htmlFor="id">Enter ID</label>

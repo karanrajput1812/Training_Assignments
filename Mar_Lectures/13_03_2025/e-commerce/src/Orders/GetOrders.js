@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {Link} from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 function GetOrders() {
     const [orders, setOrders] = useState([]);
@@ -48,6 +50,7 @@ function GetOrders() {
 
     return (
         <div className='products-form'>
+             <Navbar />
             <h1>All Orders</h1>
             <table>
                 <thead>
@@ -66,10 +69,10 @@ function GetOrders() {
                     {orders.map((order) => (
                         <tr key={order.id}>
                             <td>{order.id}</td>
-                            <td>{order.product_id}</td>
+                            <td><Link to={`/ProductDetails/${order.product_id}`}>{order.product_id}</Link></td>
                             <td>{order.quantity}</td>
                             <td>{order.total}</td>
-                            <td>{order.v_id}</td>
+                            <td><Link to={`/vendorDetails/${order.v_id}`}>{order.v_id}</Link></td>
                             <td>{order.status}</td>
                             <td>{order.date}</td>
                             <td>
@@ -80,6 +83,9 @@ function GetOrders() {
                     ))}
                 </tbody>
             </table>
+            {/* <br></br>
+            <br></br>
+            <Link to="./addOrders" className="submit-btn">Switch To Add Order</Link> */}
             {editingOrder && (
                 <div className='update-form'>
                     <h2>Update Order</h2>

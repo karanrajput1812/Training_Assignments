@@ -1,6 +1,8 @@
 import React, { use } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
+import Navbar from '../components/Navbar';
+
 
 function AddProducts() {
     const [msg, setMsg] = useState("");
@@ -33,6 +35,7 @@ function AddProducts() {
 
   return (
     <div className='products-form'>
+             <Navbar />
         <h1>Add Products</h1>
         <h3> Enter the below details to add products in inventory</h3>
             <label for="id">Enter Id</label>

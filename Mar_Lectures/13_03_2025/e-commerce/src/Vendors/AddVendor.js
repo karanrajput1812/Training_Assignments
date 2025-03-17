@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Navbar from '../components/Navbar';
+
 
 function AddVendor() {
   const [msg, setMsg] = useState("");
@@ -30,6 +32,7 @@ function AddVendor() {
 
   return (
     <div className='products-form'>
+      <Navbar />
       <h1>Add Vendor</h1>
       <h3>Enter the below details to add vendor</h3>
       <label htmlFor="name">Enter Name</label>

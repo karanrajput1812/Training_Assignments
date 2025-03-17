@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
+import Navbar from '../components/Navbar';
+
 
 function GetStock() {
     const [inventory, setInventory] = useState([]);
@@ -47,7 +50,8 @@ function GetStock() {
     }
 
     return (
-        <div className='product-form'>
+        <div className='products-form'>
+             <Navbar />
             <h1>Stock</h1>
             <table>
                 <thead>
@@ -68,9 +72,9 @@ function GetStock() {
                     {inventory.map((item) => (
                         <tr key={item.id}>
                             <td>{item.id}</td>
-                            <td>{item.product_id}</td>
+                            <td><Link to={`/ProductDetails/${item.product_id}`}>{item.product_id}</Link></td>
                             <td>{item.quantity}</td>
-                            <td>{item.v_id}</td>
+                            <td><Link to={`/vendorDetails/${item.v_id}`}>{item.v_id}</Link></td>
                             <td>{item.date}</td>
                             <td>{item.status}</td>
                             <td>{item["cost price"]}</td>
@@ -84,9 +88,12 @@ function GetStock() {
                     ))}
                 </tbody>
             </table>
+            <br></br>
+            <br></br>
+            <Link to="./addStock" className="submit-btn">Switch To Add Stock</Link>
             {editingItem && (
                 <div className='update-form'>
-                    <h2>Update Inventory Item</h2>
+                    <h2>Update Stock Item</h2>
                     <form>
                         <label>
                             Product ID:

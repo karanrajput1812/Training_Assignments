@@ -1,33 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
-import Products from './Products/Products';
-import Vendors from './Vendors/Vendors';
-import Orders from './Orders/Orders';
-import { useState } from 'react';
-import Inventory from './Inventory/Inventory';
-import Stock from './Stock/Stock';
+import {Route, Routes} from 'react-router-dom';
+import AddProducts from './Products/AddProducts';
+import VendorDetails from './Vendors/VendorDetails';
+import AddInventory from './Inventory/AddInventory';
+import AddOrders from './Orders/AddOrders';
+import AddVendor from './Vendors/AddVendor';
+import AddStock from './Stock/AddStock';
+import ProductDetail from './Products/ProductDetail';
+import GetProducts from './Products/GetProducts';
+import GetVendors from './Vendors/GetVendors';
+import GetOrders from './Orders/GetOrders';
+import GetInventory from './Inventory/GetInventory';
+import GetStock from './Stock/GetStock';
+import Customer from './Customer/Customer';
 
 function App() {
-  const [activeComponent, setActiveComponent] = useState('Products');
   
   return (
-    <div className="products-form">
-      <h1 className='header'>E-Commerce Application</h1>  
-      <div className='navigation'>
-        <button onClick={() => setActiveComponent('Products')} className='submit-btn'>Products</button>
-        <button onClick={() => setActiveComponent('Vendors')} className='submit-btn'>Vendors</button>
-        <button onClick={() => setActiveComponent('Stock')} className='submit-btn'>Stock</button>
-        <button onClick={() => setActiveComponent('Orders')} className='submit-btn'>Orders</button>
-        <button onClick={() => setActiveComponent('Inventory')} className='submit-btn'>Inventory</button>
-      </div>
-      <div className='main'>
-        {activeComponent === 'Products' && <Products />}
-        {activeComponent === 'Vendors' && <Vendors />}
-        {activeComponent === 'Orders' && <Orders />}
-        {activeComponent === 'Inventory' && <Inventory />}
-        {activeComponent === 'Stock' && <Stock />}
-      </div>
-    </div>
+      <Routes>
+        <Route path='/' element={<GetProducts />} />
+        <Route path='/products' element={<GetProducts />} />
+        <Route path='/vendors' element={<GetVendors />} />
+        <Route path='/orders' element={<GetOrders />} />
+        <Route path='/inventory' element={<GetInventory />} />
+        <Route path='/stock' element={<GetStock />} />
+        
+        <Route path='/customer' element={<Customer />} />
+ 
+        <Route path='/products/addProducts' element={<AddProducts />}/>
+        <Route path='/inventory/addInventory' element={<AddInventory />}/>
+        <Route path='/orders/addOrders' element={<AddOrders />}/>
+        <Route path='/vendors/addVendors' element={<AddVendor />}/>
+        <Route path='/stock/addStock' element={<AddStock />}/>
+
+        <Route path='/vendorDetails/:id' element={<VendorDetails />} />
+        <Route path='/ProductDetails/:id' element={<ProductDetail />} />
+       </Routes>
   );
 }
 

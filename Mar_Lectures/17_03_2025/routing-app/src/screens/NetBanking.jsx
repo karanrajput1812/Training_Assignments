@@ -6,6 +6,14 @@ function NetBanking() {
     <div>
         <Header />
         <h2>NET BANKING</h2>
+        <h3>Please Login</h3>
+        <form>
+            Username : <input></input> <br></br>
+            Password : <input></input> <br></br>
+            <br></br>
+            <button>Login</button>
+            <button>Reset</button>
+        </form>
         <Footer />
     </div>
   )
