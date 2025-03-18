@@ -82,7 +82,7 @@
       "quantity": 2,
       "total": 140000,
       "v_id": "3",
-      "status": "Delivered",
+      "status": "Shipped",
       "date": "20225-03-13"
     },
     {
@@ -113,7 +113,7 @@
       "date": "2025-03-16"
     },
     {
-      "id": "752a",
+      "id": "1fbc",
       "product_id": "1",
       "quantity": 1,
       "total": "70000",
@@ -122,12 +122,21 @@
       "date": "2025-03-18"
     },
     {
-      "id": "6f54",
+      "id": "52f6",
+      "product_id": "2",
+      "quantity": 1,
+      "total": "50000",
+      "v_id": "5",
+      "status": "Delivered",
+      "date": "2025-03-18"
+    },
+    {
+      "id": "0477",
       "product_id": "1",
       "quantity": 1,
       "total": "70000",
       "v_id": "4",
-      "status": "Processing",
+      "status": "Delivered",
       "date": "2025-03-18"
     }
   ],
@@ -135,12 +144,45 @@
     {
       "id": "1",
       "product_id": "1",
-      "quantity": 5,
+      "quantity": 8,
       "v_id": "3",
       "date": "2025-03-13",
       "status": "In Stock",
-      "cost price": 2000,
+      "cost price": 60000,
       "discount": "10%",
+      "selling price": 700000
+    },
+    {
+      "id": "2",
+      "product_id": "2",
+      "quantity": 15,
+      "v_id": "4",
+      "date": "2025-03-13",
+      "status": "In Stock",
+      "cost price": 40000,
+      "discount": "5%",
+      "selling price": 50000
+    },
+    {
+      "id": "3",
+      "product_id": "3",
+      "quantity": 20,
+      "v_id": "5",
+      "date": "2025-03-13",
+      "status": "In Stock",
+      "cost price": 3000,
+      "discount": "10%",
+      "selling price": 4000
+    },
+    {
+      "id": "4",
+      "product_id": "4",
+      "quantity": 25,
+      "v_id": "6",
+      "date": "2025-03-13",
+      "status": "In Stock",
+      "cost price": 2000,
+      "discount": "5%",
       "selling price": 2500
     }
   ],

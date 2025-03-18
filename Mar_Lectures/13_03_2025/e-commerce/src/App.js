@@ -14,10 +14,14 @@ import GetInventory from './Inventory/GetInventory';
 import GetStock from './Stock/GetStock';
 import Customer from './Customer/Customer';
 import Cart from './Customer/Cart';
+import {Provider } from 'react-redux';
+import store from './reduxContainer/store';
+import MyOrders from './Customer/MyOrders';
 
 function App() {
   
   return (
+      <Provider store={store}>
       <Routes>
         <Route path='/' element={<GetProducts />} />
         <Route path='/products' element={<GetProducts />} />
@@ -27,7 +31,8 @@ function App() {
         <Route path='/stock' element={<GetStock />} />
         
         <Route path='/customer' element={<Customer />} />
- 
+        <Route path='/myorders' element={<MyOrders />} />
+  
         <Route path='/products/addProducts' element={<AddProducts />}/>
         <Route path='/inventory/addInventory' element={<AddInventory />}/>
         <Route path='/orders/addOrders' element={<AddOrders />}/>
@@ -38,6 +43,7 @@ function App() {
         <Route path='/ProductDetails/:id' element={<ProductDetail />} />
         <Route path='/cart' element={<Cart />}/>
        </Routes>
+       </Provider>
   );
 }
 

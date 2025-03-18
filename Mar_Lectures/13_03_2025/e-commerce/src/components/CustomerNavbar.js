@@ -12,6 +12,9 @@ function CustomerNavbar() {
       <Link to="/cart" className="submit-btn">
         Cart
       </Link>
+      <Link to="/myorders" className="submit-btn">
+        My Orders
+      </Link>
       <Link to="/" className="submit-btn">
         Admin
       </Link>

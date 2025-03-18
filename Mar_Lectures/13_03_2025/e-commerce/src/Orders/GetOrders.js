@@ -50,7 +50,7 @@ function GetOrders() {
 
     return (
         <div className='products-form'>
-             <Navbar />
+            <Navbar />
             <h1>All Orders</h1>
             <table>
                 <thead>
@@ -83,36 +83,38 @@ function GetOrders() {
                     ))}
                 </tbody>
             </table>
-            {/* <br></br>
-            <br></br>
-            <Link to="./addOrders" className="submit-btn">Switch To Add Order</Link> */}
             {editingOrder && (
                 <div className='update-form'>
                     <h2>Update Order</h2>
                     <form>
                         <label>
                             Product ID:
-                            <input type="text" name="product_id" value={updatedOrder.product_id} onChange={handleUpdateChange} />
+                            <input type="text" name="product_id" value={updatedOrder.product_id || ''} onChange={handleUpdateChange} />
                         </label>
                         <label>
                             Quantity:
-                            <input type="text" name="quantity" value={updatedOrder.quantity} onChange={handleUpdateChange} />
+                            <input type="text" name="quantity" value={updatedOrder.quantity || ''} onChange={handleUpdateChange} />
                         </label>
                         <label>
                             Total:
-                            <input type="text" name="total" value={updatedOrder.total} onChange={handleUpdateChange} />
+                            <input type="text" name="total" value={updatedOrder.total || ''} onChange={handleUpdateChange} />
                         </label>
                         <label>
                             Vendor ID:
-                            <input type="text" name="v_id" value={updatedOrder.v_id} onChange={handleUpdateChange} />
+                            <input type="text" name="v_id" value={updatedOrder.v_id || ''} onChange={handleUpdateChange} />
                         </label>
                         <label>
                             Status:
-                            <input type="text" name="status" value={updatedOrder.status} onChange={handleUpdateChange} />
+                            <select name="status" value={updatedOrder.status || ''} onChange={handleUpdateChange}>
+                                <option value="Processing">Processing</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="Shipped">Shipped</option>
+                            </select>
                         </label>
                         <label>
                             Date:
-                            <input type="text" name="date" value={updatedOrder.date} onChange={handleUpdateChange} />
+                            <input type="text" name="date" value={updatedOrder.date || ''} onChange={handleUpdateChange} />
                         </label>
                         <button type="button" onClick={saveUpdatedOrder} className='submit-btn'>Save</button>
                     </form>

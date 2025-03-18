@@ -1,7 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { isAdminAuthenticated } from "../reduxContainer/EcommerceAction";
+import { useEffect } from "react";
 
 function Navbar() {
+  const dispatch = useDispatch();
+  const isAdmin = useSelector((state) => state.isAdminAuthenticated);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAdmin) {
+      let password = prompt("Enter admin password:");
+      if (password === "admin") {
+        dispatch(isAdminAuthenticated(true));
+      }
+      else {
+        navigate('/customer');
+        alert("Wrong Admin Password")
+      }
+    }
+  });
+  
   return (
     <div>
       <h1 className="header">E-Commerce Application Admin</h1>

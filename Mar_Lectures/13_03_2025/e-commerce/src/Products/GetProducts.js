@@ -1,32 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import {Link} from 'react-router-dom';
-import Navbar from '../components/Navbar';
-
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 function GetProducts() {
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
   const [updatedProduct, setUpdatedProduct] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:4000/products")
-    .then((res) => setProducts(res.data));
+    axios
+      .get("http://localhost:4000/products")
+      .then((res) => setProducts(res.data));
   });
 
   function deleteProducts(id) {
-    axios.delete("http://localhost:4000/products/" + id)
-    .then((res) => {
-      console.log(`Product Deleted Successfully`, res.data);
-      setProducts(products.filter(product => product.id !== id));
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    axios
+      .delete("http://localhost:4000/products/" + id)
+      .then((res) => {
+        console.log(`Product Deleted Successfully`, res.data);
+        setProducts(products.filter((product) => product.id !== id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function updateProducts(id) {
-    const product = products.find(prod => prod.id === id);
+    const product = products.find((prod) => prod.id === id);
     setEditingProduct(product);
     setUpdatedProduct(product);
   }
@@ -37,20 +37,28 @@ function GetProducts() {
   }
 
   function saveUpdatedProduct() {
-    axios.put("http://localhost:4000/products/" + updatedProduct.id, updatedProduct)
-    .then((res) => {
-      console.log(`Product Updated Successfully`, res.data);
-      setProducts(products.map(product => product.id === updatedProduct.id ? updatedProduct : product));
-      setEditingProduct(null);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    axios
+      .put(
+        "http://localhost:4000/products/" + updatedProduct.id,
+        updatedProduct
+      )
+      .then((res) => {
+        console.log(`Product Updated Successfully`, res.data);
+        setProducts(
+          products.map((product) =>
+            product.id === updatedProduct.id ? updatedProduct : product
+          )
+        );
+        setEditingProduct(null);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
-    <div className='products-form'>
-             <Navbar />
+    <div className="products-form">
+      <Navbar />
 
       <h1>All Products</h1>
       <table>
@@ -72,13 +80,27 @@ function GetProducts() {
               <td>{prod.id}</td>
               <td>{prod.title}</td>
               <td>{prod.price}</td>
-              <td><Link to={`/vendorDetails/${prod.v_id}`}>{prod.v_id}</Link></td>
+              <td>
+                <Link to={`/vendorDetails/${prod.v_id}`}>{prod.v_id}</Link>
+              </td>
               <td>{prod.description}</td>
               <td>{prod.category}</td>
               <td>{prod.rating}</td>
               <td>
-              <button type="button" onClick={() => deleteProducts(prod.id)} className='delete-btn'>Delete</button>
-              <button type="button" onClick={() => updateProducts(prod.id)} className='update-btn'>Update</button>
+                <button
+                  type="button"
+                  onClick={() => deleteProducts(prod.id)}
+                  className="delete-btn"
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateProducts(prod.id)}
+                  className="update-btn"
+                >
+                  Update
+                </button>
               </td>
             </tr>
           ))}
@@ -86,32 +108,65 @@ function GetProducts() {
       </table>
       <br></br>
       <br></br>
-      <Link to="./addProducts" className="submit-btn">Switch To Add Product</Link>
+      <Link to="./addProducts" className="submit-btn">
+        Switch To Add Product
+      </Link>
       {editingProduct && (
-        <div className='update-form'>
+        <div className="update-form">
           <h2>Update Product</h2>
           <form onSubmit={saveUpdatedProduct}>
             <label>
               Title:
-              <input type="text" name="title" value={updatedProduct.title} onChange={handleUpdateChange} />
+              <input
+                type="text"
+                name="title"
+                value={updatedProduct.title}
+                onChange={handleUpdateChange}
+              />
             </label>
             <label>
               Price:
-              <input type="text" name="price" value={updatedProduct.price} onChange={handleUpdateChange} />
+              <input
+                type="text"
+                name="price"
+                value={updatedProduct.price}
+                onChange={handleUpdateChange}
+              />
             </label>
             <label>
               Description:
-              <input type="text" name="description" value={updatedProduct.description} onChange={handleUpdateChange} />
+              <input
+                type="text"
+                name="description"
+                value={updatedProduct.description}
+                onChange={handleUpdateChange}
+              />
             </label>
             <label>
               Category:
-              <input type="text" name="category" value={updatedProduct.category} onChange={handleUpdateChange} />
+              <input
+                type="text"
+                name="category"
+                value={updatedProduct.category}
+                onChange={handleUpdateChange}
+              />
             </label>
             <label>
               Rating:
-              <input type="text" name="rating" value={updatedProduct.rating} onChange={handleUpdateChange} />
+              <input
+                type="text"
+                name="rating"
+                value={updatedProduct.rating}
+                onChange={handleUpdateChange}
+              />
             </label>
-            <button type="button" onClick={saveUpdatedProduct} className='submit-btn'>Save</button>
+            <button
+              type="button"
+              onClick={saveUpdatedProduct}
+              className="submit-btn"
+            >
+              Save
+            </button>
           </form>
         </div>
       )}

@@ -2,9 +2,20 @@ import React, { use } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
-
+import { useDispatch, useSelector } from "react-redux";
+import { isAdminAuthenticated } from '../reduxContainer/EcommerceAction';
 
 function AddProducts() {
+    const dispatch = useDispatch();
+    const isAdmin = useSelector((state) => state.isAdminAuthenticated);
+    
+    if(!isAdmin){
+        let password = parseInt("Enter Admin Password");
+        if(password == 'admin') {
+            dispatch(isAdminAuthenticated());
+        }
+    }
+
     const [msg, setMsg] = useState("");
     const [products, setProducts] = useState({
             "id": "",
