@@ -111,13 +111,31 @@
       "v_id": "6",
       "status": "Delivered",
       "date": "2025-03-16"
+    },
+    {
+      "id": "752a",
+      "product_id": "1",
+      "quantity": 1,
+      "total": "70000",
+      "v_id": "4",
+      "status": "Processing",
+      "date": "2025-03-18"
+    },
+    {
+      "id": "6f54",
+      "product_id": "1",
+      "quantity": 1,
+      "total": "70000",
+      "v_id": "4",
+      "status": "Processing",
+      "date": "2025-03-18"
     }
   ],
   "stock": [
     {
       "id": "1",
       "product_id": "1",
-      "quantity": 7,
+      "quantity": 5,
       "v_id": "3",
       "date": "2025-03-13",
       "status": "In Stock",

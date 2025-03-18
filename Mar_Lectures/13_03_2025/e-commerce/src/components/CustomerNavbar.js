@@ -9,7 +9,7 @@ function CustomerNavbar() {
       <Link to="/customer" className="submit-btn">
         Products
       </Link>
-      <Link to="/vendors" className="submit-btn">
+      <Link to="/cart" className="submit-btn">
         Cart
       </Link>
       <Link to="/" className="submit-btn">

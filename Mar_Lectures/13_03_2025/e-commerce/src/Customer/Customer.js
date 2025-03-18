@@ -22,17 +22,30 @@ function Customer() {
         axios.get("http://localhost:4000/stock")
             .then((res) => setStock(res.data));
     };
-
     const handleAddToCart = (productId) => {
         const productStock = stock.find(item => item.product_id === productId);
-
+        const productDetails = products.find(item => item.id === productId);
+    
         if (productStock && productStock.quantity > 0) {
+            // Update stock
             axios.put(`http://localhost:4000/stock/${productStock.id}`, {
                 ...productStock,
                 quantity: productStock.quantity - 1
             }).then(() => {
-                alert(`Product added to cart!`);
-                fetchStock();
+                // Add order
+                axios.post("http://localhost:4000/orders", {
+                    product_id: productId,
+                    quantity: 1,
+                    total: productDetails.price,
+                    v_id: productDetails.v_id,
+                    status: "In cart",
+                    date: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
+                }).then(() => {
+                    alert(`Product added to cart!`);
+                    fetchStock();
+                }).catch(err => {
+                    console.error("Error adding order:", err);
+                });
             }).catch(err => {
                 console.error("Error updating stock:", err);
             });

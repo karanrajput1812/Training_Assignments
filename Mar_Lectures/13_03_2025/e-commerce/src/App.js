@@ -13,6 +13,7 @@ import GetOrders from './Orders/GetOrders';
 import GetInventory from './Inventory/GetInventory';
 import GetStock from './Stock/GetStock';
 import Customer from './Customer/Customer';
+import Cart from './Customer/Cart';
 
 function App() {
   
@@ -35,6 +36,7 @@ function App() {
 
         <Route path='/vendorDetails/:id' element={<VendorDetails />} />
         <Route path='/ProductDetails/:id' element={<ProductDetail />} />
+        <Route path='/cart' element={<Cart />}/>
        </Routes>
   );
 }
