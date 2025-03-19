@@ -1,0 +1,47 @@
+<div class="container">
+    <app-navigation></app-navigation>
+    <section class="main" id="loan_calculator">
+        <h2>Loan Calculator</h2>
+        <br>
+        <a class="submit-btn" routerLink="/services/calculator/deposit-calculator">
+            👉🏻 Click Here For Deposit Calculator
+        </a>
+        <br>
+        <br>
+        <div class="contact-form">
+        <h3>Enter the below details</h3>
+        <form id="loan_form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+            <label for="name">Applicant</label>
+            <input type="text" id="name" name="name" placeholder="Enter applicant name" required>
+            </div>
+            <div class="form-group">
+            <label for="type">Type</label>
+            <select id="type" name="type" (change)="updatedInterest()" required [(ngModel)]="type">
+                <option value="">Select a type</option>
+                <option value="home">Home</option>
+                <option value="car">Car</option>
+                <option value="personal">Personal</option>
+            </select>
+            </div>
+            <div class="form-group">
+            <label for="interest">Interest</label>
+            <input type="number" id="interest" name="interest" placeholder="Enter Interest" [(ngModel)]="interest" required readonly>
+            </div>
+            <div class="form-group">
+            <label for="tenure">Tenure</label>
+            <input type="number" id="tenure" name="tenure" placeholder="Enter Tenure" [(ngModel)]="tenure" required>
+            </div>
+            <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" name="amount" placeholder="Enter Amount" required [(ngModel)]="amount">
+            </div>
+            <button type="submit" class="submit-btn">Calculate EMI</button>
+            <br>
+            <h1 class="emi" *ngIf="emi > 0">{{emi}}</h1>
+                <br>
+                <br>
+        </form>
+        </div>
+    </section>
+</div>
