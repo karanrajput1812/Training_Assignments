@@ -17,7 +17,7 @@ export class BalanceEnquiryComponent {
 
   ngOnInit(): void {
     // Simulate fetching user data (replace with actual service call if needed)
-    this.user = { id: 1 }; // Example user object
+    this.user = { id: 3 }; // Example user object
 
     if (this.user) {
       this.http.get<number>(`http://localhost:8080/checkBalance/${this.user.id}`)

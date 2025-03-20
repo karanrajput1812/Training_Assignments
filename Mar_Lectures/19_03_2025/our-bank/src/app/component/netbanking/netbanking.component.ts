@@ -3,24 +3,31 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Router } from '@angular/router';
 import { HttpClient} from '@angular/common/http';
 import { NavigationComponent } from '../navigation/navigation.component';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../states/app.state';
+import { selectAuth } from '../../states/auth.selector';
 // Removed unused imports
 
 @Component({
   selector: 'app-netbanking',
-  imports: [NavigationComponent, FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [NavigationComponent, FormsModule, ReactiveFormsModule, CommonModule,AsyncPipe],
   templateUrl: './netbanking.component.html',
   styleUrls: ['./netbanking.component.css']
 })
 export class NetbankingComponent {
+  auth: Observable<boolean>;
+
   msg: string = '';
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private store: Store<AppState>) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+    this.auth = this.store.select(selectAuth);
   }
 
   loginUser(): void {
