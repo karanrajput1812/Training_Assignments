@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../states/app.state';
 import { selectAuth } from '../../states/auth.selector';
-// Removed unused imports
+import { login } from '../../states/auth.action';
 
 @Component({
   selector: 'app-netbanking',
@@ -35,18 +35,19 @@ export class NetbankingComponent {
       this.msg = 'Please fill in all required fields.';
       return;
     }
-
+    
     const user = this.loginForm.value;
 
     this.http.post('http://localhost:8080/login', user).subscribe({
       next: (res: any) => {
-        if (!res.email) {
+        // if (!res.email) {
+        //   console.log(res);
+        //   this.msg = 'Incorrect Username Or Password';
+        // } else {
           console.log(res);
-          this.msg = 'Incorrect Username Or Password';
-        } else {
-          console.log(res);
+          this.store.dispatch(login());
           this.router.navigate(['/user/balance-enquiry']);
-        }
+        // }
       },
       error: (err) => {
         console.error(err);
